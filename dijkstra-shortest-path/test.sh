@@ -146,6 +146,79 @@ fi
 SOLUTION_CMDS+=("./solution")
 SOLUTION_READY+=("$ZIG_READY")
 
+# C (pre-compile, then run binary)
+SOLUTION_NAMES+=("C")
+C_READY=0
+if command -v gcc &>/dev/null; then
+    if gcc -O2 -o solution_c solution.c 2>/dev/null; then
+        C_READY=1
+    fi
+fi
+SOLUTION_CMDS+=("./solution_c")
+SOLUTION_READY+=("$C_READY")
+
+# Assembly (x86-64, pre-compile, then run binary)
+SOLUTION_NAMES+=("ASM")
+ASM_READY=0
+if command -v clang &>/dev/null && arch -x86_64 true 2>/dev/null; then
+    if clang -target x86_64-apple-macos11 -nostdlib -static -e start -o solution_asm solution.S 2>/dev/null; then
+        ASM_READY=1
+    fi
+fi
+SOLUTION_CMDS+=("arch -x86_64 ./solution_asm")
+SOLUTION_READY+=("$ASM_READY")
+
+# Julia
+SOLUTION_NAMES+=("Julia")
+SOLUTION_CMDS+=("julia solution.jl")
+if command -v julia &>/dev/null; then
+    SOLUTION_READY+=(1)
+else
+    SOLUTION_READY+=(0)
+fi
+
+# Factor
+SOLUTION_NAMES+=("Factor")
+SOLUTION_CMDS+=("$HOME/factor/factor -script solution.factor")
+if [[ -x "$HOME/factor/factor" ]]; then
+    SOLUTION_READY+=(1)
+else
+    SOLUTION_READY+=(0)
+fi
+
+# TypeScript (pre-compile, then run with node)
+SOLUTION_NAMES+=("TypeScript")
+TS_READY=0
+if command -v node &>/dev/null && npx tsc --version &>/dev/null; then
+    if npx tsc --target ES2020 --module commonjs --strict solution.ts 2>/dev/null; then
+        TS_READY=1
+    fi
+fi
+SOLUTION_CMDS+=("node solution.js")
+SOLUTION_READY+=("$TS_READY")
+
+# Rust (pre-compile, then run binary)
+SOLUTION_NAMES+=("Rust")
+RS_READY=0
+if command -v rustc &>/dev/null; then
+    if rustc -O -o solution_rs solution.rs 2>/dev/null; then
+        RS_READY=1
+    fi
+fi
+SOLUTION_CMDS+=("./solution_rs")
+SOLUTION_READY+=("$RS_READY")
+
+# C++ (pre-compile, then run binary)
+SOLUTION_NAMES+=("C++")
+CPP_READY=0
+if command -v g++ &>/dev/null; then
+    if g++ -std=c++17 -O2 -o solution_cpp solution.cpp 2>/dev/null; then
+        CPP_READY=1
+    fi
+fi
+SOLUTION_CMDS+=("./solution_cpp")
+SOLUTION_READY+=("$CPP_READY")
+
 # --- Run tests ---
 
 echo -e "${BOLD}Dijkstra's Shortest Path — Test Suite${NC}"
@@ -192,8 +265,8 @@ for ((s = 0; s < NUM_SOLUTIONS; s++)); do
     echo ""
 done
 
-# Clean up Zig build artifacts
-rm -f "$DIR/solution" "$DIR/solution.o"
+# Clean up build artifacts
+rm -f "$DIR/solution" "$DIR/solution.o" "$DIR/solution_c" "$DIR/solution_asm" "$DIR/solution.js" "$DIR/solution_rs" "$DIR/solution_cpp"
 
 # --- Summary ---
 

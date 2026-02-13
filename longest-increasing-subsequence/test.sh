@@ -137,6 +137,69 @@ fi
 echo
 
 # --------------------------------------------------------------------------
+# Compile C
+# --------------------------------------------------------------------------
+printf "${YELLOW}Compiling C...${NC}\n"
+if gcc -O2 -o "$DIR/solution_c" "$DIR/solution.c" 2>/dev/null; then
+    echo "  Done."
+else
+    echo "  Warning: C compilation may have failed."
+fi
+echo
+
+# --------------------------------------------------------------------------
+# Compile Assembly (x86-64)
+# --------------------------------------------------------------------------
+if command -v clang &>/dev/null && arch -x86_64 true 2>/dev/null; then
+    printf "${YELLOW}Compiling Assembly...${NC}\n"
+    if clang -target x86_64-apple-macos11 -nostdlib -static -e start -o "$DIR/solution_asm" "$DIR/solution.S" 2>/dev/null; then
+        echo "  Done."
+    else
+        echo "  Warning: Assembly compilation may have failed."
+    fi
+    echo
+fi
+
+# --------------------------------------------------------------------------
+# Compile TypeScript
+# --------------------------------------------------------------------------
+if command -v node &>/dev/null && npx tsc --version &>/dev/null; then
+    printf "${YELLOW}Compiling TypeScript...${NC}\n"
+    if npx tsc --target ES2020 --module commonjs --strict "$DIR/solution.ts" 2>/dev/null; then
+        echo "  Done."
+    else
+        echo "  Warning: TypeScript compilation may have failed."
+    fi
+    echo
+fi
+
+# --------------------------------------------------------------------------
+# Compile Rust
+# --------------------------------------------------------------------------
+if command -v rustc &>/dev/null; then
+    printf "${YELLOW}Compiling Rust...${NC}\n"
+    if rustc -O -o "$DIR/solution_rs" "$DIR/solution.rs" 2>/dev/null; then
+        echo "  Done."
+    else
+        echo "  Warning: Rust compilation may have failed."
+    fi
+    echo
+fi
+
+# --------------------------------------------------------------------------
+# Compile C++
+# --------------------------------------------------------------------------
+if command -v g++ &>/dev/null; then
+    printf "${YELLOW}Compiling C++...${NC}\n"
+    if g++ -std=c++17 -O2 -o "$DIR/solution_cpp" "$DIR/solution.cpp" 2>/dev/null; then
+        echo "  Done."
+    else
+        echo "  Warning: C++ compilation may have failed."
+    fi
+    echo
+fi
+
+# --------------------------------------------------------------------------
 # Run tests for each language
 # --------------------------------------------------------------------------
 
@@ -150,6 +213,48 @@ else
     printf "${RED}Skipping Zig (compilation failed)${NC}\n\n"
 fi
 
+if [[ -f "$DIR/solution_c" ]]; then
+    run_tests "C" "'$DIR/solution_c'"
+else
+    printf "${RED}Skipping C (compilation failed)${NC}\n\n"
+fi
+
+if [[ -f "$DIR/solution_asm" ]]; then
+    run_tests "ASM" "arch -x86_64 '$DIR/solution_asm'"
+else
+    printf "${RED}Skipping Assembly (compilation failed or not supported)${NC}\n\n"
+fi
+
+if command -v julia &>/dev/null; then
+    run_tests "Julia" "julia '$DIR/solution.jl'"
+else
+    printf "${RED}Skipping Julia (julia not found)${NC}\n\n"
+fi
+
+if [[ -x "$HOME/factor/factor" ]]; then
+    run_tests "Factor" "'$HOME/factor/factor' -script '$DIR/solution.factor'"
+else
+    printf "${RED}Skipping Factor (~/factor/factor not found)${NC}\n\n"
+fi
+
+if [[ -f "$DIR/solution.js" ]]; then
+    run_tests "TypeScript" "node '$DIR/solution.js'"
+else
+    printf "${RED}Skipping TypeScript (compilation failed or tsc not found)${NC}\n\n"
+fi
+
+if [[ -f "$DIR/solution_rs" ]]; then
+    run_tests "Rust" "'$DIR/solution_rs'"
+else
+    printf "${RED}Skipping Rust (compilation failed or rustc not found)${NC}\n\n"
+fi
+
+if [[ -f "$DIR/solution_cpp" ]]; then
+    run_tests "C++" "'$DIR/solution_cpp'"
+else
+    printf "${RED}Skipping C++ (compilation failed or g++ not found)${NC}\n\n"
+fi
+
 # --------------------------------------------------------------------------
 # Summary
 # --------------------------------------------------------------------------
@@ -158,7 +263,7 @@ printf "Total: %d  |  ${GREEN}Pass: %d${NC}  |  ${RED}Fail: %d${NC}\n" "$TOTAL" 
 echo "==============================="
 
 # Cleanup compiled binaries
-rm -f "$DIR/solution_go" "$DIR/solution_zig" "$DIR/solution_zig.o"
+rm -f "$DIR/solution_go" "$DIR/solution_zig" "$DIR/solution_zig.o" "$DIR/solution_c" "$DIR/solution_asm" "$DIR/solution.js" "$DIR/solution_rs" "$DIR/solution_cpp"
 
 if [[ $FAIL -gt 0 ]]; then
     exit 1

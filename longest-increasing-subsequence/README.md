@@ -147,6 +147,55 @@ After processing all elements, the answer is `len(tails)`.
 | Ruby | `solution.rb` | Uses `bsearch_index` for binary search |
 | Go | `solution.go` | Uses `sort.SearchInts` |
 | Zig | `solution.zig` | Manual binary search with `std.io` |
+| C | `solution.c` | Manual binary search |
+| x86-64 Assembly | `solution.S` | AT&T syntax, macOS |
+| Julia | `solution.jl` | Standard library |
+| Factor | `solution.factor` | Stack-based concatenative language |
+| TypeScript | `solution.ts` | Custom `lowerBound`, compiled with `tsc` |
+| Rust | `solution.rs` | Manual binary search, idiomatic iterators |
+| C++ | `solution.cpp` | Uses `std::lower_bound` from `<algorithm>` |
+
+### Build & Run
+
+**TypeScript:**
+```bash
+tsc --target ES2020 --module commonjs --strict solution.ts
+node solution.js < input.txt
+```
+
+**Rust:**
+```bash
+rustc -O -o solution_rs solution.rs
+./solution_rs < input.txt
+```
+
+**C++:**
+```bash
+g++ -std=c++17 -O2 -o solution_cpp solution.cpp
+./solution_cpp < input.txt
+```
+
+**C:**
+```bash
+gcc -O2 -o solution_c solution.c
+./solution_c < input.txt
+```
+
+**x86-64 Assembly (macOS):**
+```bash
+clang -target x86_64-apple-macos11 -nostdlib -static -e start -o solution_asm solution.S
+arch -x86_64 ./solution_asm < input.txt
+```
+
+**Julia:**
+```bash
+julia solution.jl < input.txt
+```
+
+**Factor:**
+```bash
+~/factor/factor -script solution.factor < input.txt
+```
 
 ## Testing
 

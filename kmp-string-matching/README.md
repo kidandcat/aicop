@@ -170,6 +170,55 @@ The naive approach (check every starting position) is O(N * M) in the worst case
 | solution.rb   | Ruby     | `gets.chomp` for input                     |
 | solution.go   | Go       | `bufio.Scanner` with large buffer          |
 | solution.zig  | Zig      | Buffered stdin reader, manual line parsing |
+| solution.c    | C        | `fgets` / manual parsing                   |
+| solution.S    | x86-64 Assembly | AT&T syntax, macOS                  |
+| solution.jl   | Julia    | Standard I/O                               |
+| solution.factor | Factor | Stack-based concatenative language         |
+| solution.ts   | TypeScript | Compiled with `tsc`                      |
+| solution.rs   | Rust     | Byte-level matching with `BufWriter`       |
+| solution.cpp  | C++      | `getline` input, STL `vector`              |
+
+### Build & Run
+
+**TypeScript:**
+```bash
+tsc --target ES2020 --module commonjs --strict solution.ts
+node solution.js < input.txt
+```
+
+**Rust:**
+```bash
+rustc -O -o solution_rs solution.rs
+./solution_rs < input.txt
+```
+
+**C++:**
+```bash
+g++ -std=c++17 -O2 -o solution_cpp solution.cpp
+./solution_cpp < input.txt
+```
+
+**C:**
+```bash
+gcc -O2 -o solution_c solution.c
+./solution_c < input.txt
+```
+
+**x86-64 Assembly (macOS):**
+```bash
+clang -target x86_64-apple-macos11 -nostdlib -static -e start -o solution_asm solution.S
+arch -x86_64 ./solution_asm < input.txt
+```
+
+**Julia:**
+```bash
+julia solution.jl < input.txt
+```
+
+**Factor:**
+```bash
+~/factor/factor -script solution.factor < input.txt
+```
 
 ## Testing
 

@@ -93,6 +93,55 @@ All arithmetic is performed modulo 10^9 + 7 to prevent overflow and produce the 
 - [solution.rb](solution.rb) - Ruby
 - [solution.go](solution.go) - Go
 - [solution.zig](solution.zig) - Zig
+- [solution.c](solution.c) - C
+- [solution.S](solution.S) - x86-64 Assembly (AT&T syntax, macOS)
+- [solution.jl](solution.jl) - Julia
+- [solution.factor](solution.factor) - Factor
+- [solution.ts](solution.ts) - TypeScript (BigInt for N up to 10^18)
+- [solution.rs](solution.rs) - Rust
+- [solution.cpp](solution.cpp) - C++ (array-based 2x2 matrix)
+
+### Build & Run
+
+**TypeScript:**
+```bash
+tsc --target ES2020 --module commonjs --strict solution.ts
+node solution.js < input.txt
+```
+
+**Rust:**
+```bash
+rustc -O -o solution_rs solution.rs
+./solution_rs < input.txt
+```
+
+**C++:**
+```bash
+g++ -std=c++17 -O2 -o solution_cpp solution.cpp
+./solution_cpp < input.txt
+```
+
+**C:**
+```bash
+gcc -O2 -o solution_c solution.c
+./solution_c < input.txt
+```
+
+**x86-64 Assembly (macOS):**
+```bash
+clang -target x86_64-apple-macos11 -nostdlib -static -e start -o solution_asm solution.S
+arch -x86_64 ./solution_asm < input.txt
+```
+
+**Julia:**
+```bash
+julia solution.jl < input.txt
+```
+
+**Factor:**
+```bash
+~/factor/factor -script solution.factor < input.txt
+```
 
 ## Testing
 

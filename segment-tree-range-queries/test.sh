@@ -132,6 +132,71 @@ else
     echo -e "${YELLOW}Zig not found, skipping${NC}"
 fi
 
+C_BIN=""
+if command -v gcc &>/dev/null; then
+    echo "Compiling C..."
+    if gcc -O2 -o solution_c solution.c 2>&1; then
+        C_BIN="./solution_c"
+        echo -e "${GREEN}C compiled successfully${NC}"
+    else
+        echo -e "${RED}C compilation failed${NC}"
+    fi
+else
+    echo -e "${YELLOW}gcc not found, skipping C${NC}"
+fi
+
+ASM_BIN=""
+if command -v clang &>/dev/null && arch -x86_64 true 2>/dev/null; then
+    echo "Compiling Assembly..."
+    if clang -target x86_64-apple-macos11 -nostdlib -static -e start -o solution_asm solution.S 2>/dev/null; then
+        ASM_BIN="arch -x86_64 ./solution_asm"
+        echo -e "${GREEN}Assembly compiled successfully${NC}"
+    else
+        echo -e "${RED}Assembly compilation failed${NC}"
+    fi
+else
+    echo -e "${YELLOW}clang not found or x86_64 not supported, skipping Assembly${NC}"
+fi
+
+TS_BIN=""
+if command -v node &>/dev/null && npx tsc --version &>/dev/null; then
+    echo "Compiling TypeScript..."
+    if npx tsc --target ES2020 --module commonjs --strict solution.ts 2>/dev/null; then
+        TS_BIN="node solution.js"
+        echo -e "${GREEN}TypeScript compiled successfully${NC}"
+    else
+        echo -e "${RED}TypeScript compilation failed${NC}"
+    fi
+else
+    echo -e "${YELLOW}tsc or node not found, skipping TypeScript${NC}"
+fi
+
+RS_BIN=""
+if command -v rustc &>/dev/null; then
+    echo "Compiling Rust..."
+    if rustc -O -o solution_rs solution.rs 2>/dev/null; then
+        RS_BIN="./solution_rs"
+        echo -e "${GREEN}Rust compiled successfully${NC}"
+    else
+        echo -e "${RED}Rust compilation failed${NC}"
+    fi
+else
+    echo -e "${YELLOW}rustc not found, skipping Rust${NC}"
+fi
+
+CPP_BIN=""
+if command -v g++ &>/dev/null; then
+    echo "Compiling C++..."
+    if g++ -std=c++17 -O2 -o solution_cpp solution.cpp 2>/dev/null; then
+        CPP_BIN="./solution_cpp"
+        echo -e "${GREEN}C++ compiled successfully${NC}"
+    else
+        echo -e "${RED}C++ compilation failed${NC}"
+    fi
+else
+    echo -e "${YELLOW}g++ not found, skipping C++${NC}"
+fi
+
 echo ""
 
 # ---- Define runners ----
@@ -164,6 +229,45 @@ fi
 if [[ -n "$ZIG_BIN" ]]; then
     RUNNERS+=("$ZIG_BIN")
     RUNNER_NAMES+=("Zig")
+fi
+
+if [[ -n "$C_BIN" ]]; then
+    RUNNERS+=("$C_BIN")
+    RUNNER_NAMES+=("C")
+fi
+
+if [[ -n "$ASM_BIN" ]]; then
+    RUNNERS+=("$ASM_BIN")
+    RUNNER_NAMES+=("ASM")
+fi
+
+if command -v julia &>/dev/null; then
+    RUNNERS+=("julia solution.jl")
+    RUNNER_NAMES+=("Julia")
+else
+    echo -e "${YELLOW}Julia not found, skipping${NC}"
+fi
+
+if [[ -x "$HOME/factor/factor" ]]; then
+    RUNNERS+=("$HOME/factor/factor -script solution.factor")
+    RUNNER_NAMES+=("Factor")
+else
+    echo -e "${YELLOW}Factor not found, skipping${NC}"
+fi
+
+if [[ -n "$TS_BIN" ]]; then
+    RUNNERS+=("$TS_BIN")
+    RUNNER_NAMES+=("TypeScript")
+fi
+
+if [[ -n "$RS_BIN" ]]; then
+    RUNNERS+=("$RS_BIN")
+    RUNNER_NAMES+=("Rust")
+fi
+
+if [[ -n "$CPP_BIN" ]]; then
+    RUNNERS+=("$CPP_BIN")
+    RUNNER_NAMES+=("C++")
 fi
 
 if [[ ${#RUNNERS[@]} -eq 0 ]]; then
@@ -209,7 +313,7 @@ for runner_idx in "${!RUNNERS[@]}"; do
 done
 
 # ---- Cleanup ----
-rm -f solution_go solution_zig
+rm -f solution_go solution_zig solution_c solution_asm solution.js solution_rs solution_cpp
 
 # ---- Summary ----
 TOTAL=$((PASS + FAIL + SKIP))

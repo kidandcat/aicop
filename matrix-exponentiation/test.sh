@@ -122,6 +122,140 @@ else
     echo "Skipping Zig (zig not found)"
 fi
 
+# --- C ---
+if command -v gcc &>/dev/null; then
+    echo "${YELLOW}C:${NC}"
+    C_BIN="$DIR/solution_c"
+    if gcc -O2 -o "$C_BIN" "$DIR/solution.c" 2>/dev/null; then
+        for tc in "${TESTS[@]}"; do
+            input="${tc%% *}"
+            expected="${tc##* }"
+            actual=$(echo "$input" | "$C_BIN" 2>/dev/null || echo "ERROR")
+            actual=$(echo "$actual" | tr -d '[:space:]')
+            print_result "C" "$input" "$expected" "$actual"
+        done
+        rm -f "$C_BIN"
+    else
+        echo "  Failed to compile C solution"
+    fi
+    echo ""
+else
+    echo "Skipping C (gcc not found)"
+fi
+
+# --- Assembly (x86-64) ---
+if command -v clang &>/dev/null && arch -x86_64 true 2>/dev/null; then
+    echo "${YELLOW}Assembly:${NC}"
+    ASM_BIN="$DIR/solution_asm"
+    if clang -target x86_64-apple-macos11 -nostdlib -static -e start -o "$ASM_BIN" "$DIR/solution.S" 2>/dev/null; then
+        for tc in "${TESTS[@]}"; do
+            input="${tc%% *}"
+            expected="${tc##* }"
+            actual=$(echo "$input" | arch -x86_64 "$ASM_BIN" 2>/dev/null || echo "ERROR")
+            actual=$(echo "$actual" | tr -d '[:space:]')
+            print_result "ASM" "$input" "$expected" "$actual"
+        done
+        rm -f "$ASM_BIN"
+    else
+        echo "  Failed to compile Assembly solution"
+    fi
+    echo ""
+else
+    echo "Skipping Assembly (clang not found or x86_64 not supported)"
+fi
+
+# --- Julia ---
+if command -v julia &>/dev/null; then
+    echo "${YELLOW}Julia:${NC}"
+    for tc in "${TESTS[@]}"; do
+        input="${tc%% *}"
+        expected="${tc##* }"
+        actual=$(echo "$input" | julia "$DIR/solution.jl" 2>/dev/null || echo "ERROR")
+        actual=$(echo "$actual" | tr -d '[:space:]')
+        print_result "Julia" "$input" "$expected" "$actual"
+    done
+    echo ""
+else
+    echo "Skipping Julia (julia not found)"
+fi
+
+# --- Factor ---
+if [[ -x "$HOME/factor/factor" ]]; then
+    echo "${YELLOW}Factor:${NC}"
+    for tc in "${TESTS[@]}"; do
+        input="${tc%% *}"
+        expected="${tc##* }"
+        actual=$(echo "$input" | "$HOME/factor/factor" -script "$DIR/solution.factor" 2>/dev/null || echo "ERROR")
+        actual=$(echo "$actual" | tr -d '[:space:]')
+        print_result "Factor" "$input" "$expected" "$actual"
+    done
+    echo ""
+else
+    echo "Skipping Factor (~/factor/factor not found)"
+fi
+
+# --- TypeScript ---
+if command -v node &>/dev/null && npx tsc --version &>/dev/null; then
+    echo "${YELLOW}TypeScript:${NC}"
+    if npx tsc --target ES2020 --module commonjs --strict "$DIR/solution.ts" 2>/dev/null; then
+        for tc in "${TESTS[@]}"; do
+            input="${tc%% *}"
+            expected="${tc##* }"
+            actual=$(echo "$input" | node "$DIR/solution.js" 2>/dev/null || echo "ERROR")
+            actual=$(echo "$actual" | tr -d '[:space:]')
+            print_result "TS" "$input" "$expected" "$actual"
+        done
+        rm -f "$DIR/solution.js"
+    else
+        echo "  Failed to compile TypeScript solution"
+    fi
+    echo ""
+else
+    echo "Skipping TypeScript (tsc or node not found)"
+fi
+
+# --- Rust ---
+if command -v rustc &>/dev/null; then
+    echo "${YELLOW}Rust:${NC}"
+    RS_BIN="$DIR/solution_rs"
+    if rustc -O -o "$RS_BIN" "$DIR/solution.rs" 2>/dev/null; then
+        for tc in "${TESTS[@]}"; do
+            input="${tc%% *}"
+            expected="${tc##* }"
+            actual=$(echo "$input" | "$RS_BIN" 2>/dev/null || echo "ERROR")
+            actual=$(echo "$actual" | tr -d '[:space:]')
+            print_result "Rust" "$input" "$expected" "$actual"
+        done
+        rm -f "$RS_BIN"
+    else
+        echo "  Failed to compile Rust solution"
+    fi
+    echo ""
+else
+    echo "Skipping Rust (rustc not found)"
+fi
+
+# --- C++ ---
+if command -v g++ &>/dev/null; then
+    echo "${YELLOW}C++:${NC}"
+    CPP_BIN="$DIR/solution_cpp"
+    if g++ -std=c++17 -O2 -o "$CPP_BIN" "$DIR/solution.cpp" 2>/dev/null; then
+        for tc in "${TESTS[@]}"; do
+            input="${tc%% *}"
+            expected="${tc##* }"
+            actual=$(echo "$input" | "$CPP_BIN" 2>/dev/null || echo "ERROR")
+            actual=$(echo "$actual" | tr -d '[:space:]')
+            print_result "C++" "$input" "$expected" "$actual"
+        done
+        rm -f "$CPP_BIN"
+    else
+        echo "  Failed to compile C++ solution"
+    fi
+    echo ""
+else
+    echo "Skipping C++ (g++ not found)"
+fi
+
 # --- Summary ---
 echo "========================================"
 printf "Results: ${GREEN}%d passed${NC}, ${RED}%d failed${NC}, %d total\n" "$PASS" "$FAIL" "$TOTAL"

@@ -101,6 +101,24 @@ cd "$DIR"
 go build -o solution_go solution.go 2>&1
 echo -e "${YELLOW}Building Zig solution...${NC}"
 zig build-exe solution.zig -O ReleaseFast -femit-bin=solution_zig 2>&1
+echo -e "${YELLOW}Building C solution...${NC}"
+gcc -O2 -o solution_c solution.c 2>&1
+if command -v clang &>/dev/null && arch -x86_64 true 2>/dev/null; then
+    echo -e "${YELLOW}Building Assembly solution...${NC}"
+    clang -target x86_64-apple-macos11 -nostdlib -static -e start -o solution_asm solution.S 2>/dev/null || echo "Assembly compilation failed"
+fi
+if command -v node &>/dev/null && npx tsc --version &>/dev/null; then
+    echo -e "${YELLOW}Compiling TypeScript solution...${NC}"
+    npx tsc --target ES2020 --module commonjs --strict solution.ts 2>&1 || echo "TypeScript compilation failed"
+fi
+if command -v rustc &>/dev/null; then
+    echo -e "${YELLOW}Compiling Rust solution...${NC}"
+    rustc -O -o solution_rs solution.rs 2>&1 || echo "Rust compilation failed"
+fi
+if command -v g++ &>/dev/null; then
+    echo -e "${YELLOW}Compiling C++ solution...${NC}"
+    g++ -std=c++17 -O2 -o solution_cpp solution.cpp 2>&1 || echo "C++ compilation failed"
+fi
 
 run_test() {
     local runner_name="$1"
@@ -140,6 +158,13 @@ declare -a RUNNERS=(
     "Ruby|ruby $DIR/solution.rb"
     "Go|$DIR/solution_go"
     "Zig|$DIR/solution_zig"
+    "C|$DIR/solution_c"
+    "ASM|arch -x86_64 $DIR/solution_asm"
+    "Julia|julia $DIR/solution.jl"
+    "Factor|$HOME/factor/factor -script $DIR/solution.factor"
+    "TypeScript|node $DIR/solution.js"
+    "Rust|$DIR/solution_rs"
+    "C++|$DIR/solution_cpp"
 )
 
 echo ""
@@ -163,7 +188,7 @@ for (( t = 0; t < NUM_TESTS; t++ )); do
 done
 
 # Cleanup compiled binaries
-rm -f "$DIR/solution_go" "$DIR/solution_zig" "$DIR/solution_zig.o"
+rm -f "$DIR/solution_go" "$DIR/solution_zig" "$DIR/solution_zig.o" "$DIR/solution_c" "$DIR/solution_asm" "$DIR/solution.js" "$DIR/solution_rs" "$DIR/solution_cpp"
 
 echo ""
 echo "======================================"

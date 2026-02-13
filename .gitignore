@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Compiled binaries
+*.o
+*.out
+*.exe
+*.class
+*.pyc
+__pycache__/
+
+# Rust
+target/
+
+# Zig
+zig-cache/
+zig-out/
+
+# Go
+*.test
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

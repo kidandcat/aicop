@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AICOP - AI Coding Capabilities Report</title>
+<meta name="description" content="Comparative analysis of AI-generated competitive programming solutions across 11 languages. How well does Claude write code in Python, C++, Rust, Assembly and more?">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-primary:#0a0e17;
+  --bg-secondary:#111827;
+  --bg-card:#1a2234;
+  --bg-card-hover:#1e2940;
+  --border-subtle:#1e293b;
+  --border-glow:#3b82f620;
+  --text-primary:#f1f5f9;
+  --text-secondary:#94a3b8;
+  --text-muted:#64748b;
+  --accent-blue:#3b82f6;
+  --accent-cyan:#06b6d4;
+  --accent-violet:#8b5cf6;
+  --accent-emerald:#10b981;
+  --accent-amber:#f59e0b;
+  --accent-rose:#f43f5e;
+  --accent-orange:#f97316;
+  --gradient-hero:linear-gradient(135deg,#3b82f6 0%,#8b5cf6 50%,#06b6d4 100%);
+  --gradient-card:linear-gradient(135deg,#1a2234 0%,#111827 100%);
+  --font-sans:'Inter',system-ui,-apple-system,sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --radius:12px;
+  --radius-sm:8px;
+  --radius-lg:16px;
+  --shadow-card:0 4px 24px rgba(0,0,0,.3),0 0 0 1px var(--border-subtle);
+  --shadow-glow:0 0 40px rgba(59,130,246,.15);
+  --transition:all .3s cubic-bezier(.4,0,.2,1);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:var(--font-sans);
+  background:var(--bg-primary);
+  color:var(--text-primary);
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--accent-blue);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ---- Nav ---- */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(10,14,23,.85);
+  backdrop-filter:blur(16px) saturate(1.4);
+  border-bottom:1px solid var(--border-subtle);
+  transition:var(--transition);
+}
+.nav-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;height:64px;
+}
+.nav-logo{
+  font-weight:800;font-size:1.2rem;
+  background:var(--gradient-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  letter-spacing:-.02em;
+}
+.nav-links{display:flex;gap:8px;align-items:center}
+.nav-links a{
+  color:var(--text-secondary);font-size:.85rem;font-weight:500;
+  padding:6px 14px;border-radius:999px;
+  transition:var(--transition);text-decoration:none;
+}
+.nav-links a:hover{color:var(--text-primary);background:rgba(255,255,255,.06)}
+@media(max-width:768px){.nav-links{display:none}}
+
+/* ---- Hero ---- */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:120px 24px 80px;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-50%;left:-50%;
+  width:200%;height:200%;
+  background:radial-gradient(ellipse at 30% 20%,rgba(59,130,246,.08) 0%,transparent 50%),
+             radial-gradient(ellipse at 70% 80%,rgba(139,92,246,.06) 0%,transparent 50%),
+             radial-gradient(ellipse at 50% 50%,rgba(6,182,212,.04) 0%,transparent 60%);
+  animation:heroBg 20s ease-in-out infinite alternate;
+}
+@keyframes heroBg{
+  0%{transform:translate(0,0) rotate(0deg)}
+  100%{transform:translate(-2%,2%) rotate(3deg)}
+}
+.hero-badge{
+  position:relative;
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 20px;border-radius:999px;
+  background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);
+  font-size:.8rem;font-weight:600;color:var(--accent-blue);
+  margin-bottom:32px;
+  animation:fadeInUp .6s ease-out;
+}
+.hero-badge .pulse{
+  width:8px;height:8px;border-radius:50%;background:var(--accent-emerald);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{
+  position:relative;
+  font-size:clamp(2.5rem,7vw,5rem);
+  font-weight:900;letter-spacing:-.04em;
+  line-height:1.05;
+  max-width:900px;
+  margin-bottom:24px;
+  animation:fadeInUp .6s ease-out .1s both;
+}
+.hero h1 .gradient{
+  background:var(--gradient-hero);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero-subtitle{
+  position:relative;
+  font-size:clamp(1rem,2.5vw,1.3rem);
+  color:var(--text-secondary);
+  max-width:640px;line-height:1.7;
+  margin-bottom:48px;
+  animation:fadeInUp .6s ease-out .2s both;
+}
+.hero-stats{
+  position:relative;
+  display:flex;flex-wrap:wrap;gap:32px;justify-content:center;
+  animation:fadeInUp .6s ease-out .3s both;
+}
+.hero-stat{text-align:center}
+.hero-stat-value{
+  font-size:2.5rem;font-weight:900;letter-spacing:-.03em;
+  background:var(--gradient-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero-stat-label{font-size:.8rem;color:var(--text-muted);font-weight:500;text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+.scroll-indicator{
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  animation:bounce 2s ease-in-out infinite;
+  color:var(--text-muted);
+}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(10px)}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* ---- Sections ---- */
+.section{padding:80px 24px}
+.section-inner{max-width:1200px;margin:0 auto}
+.section-header{text-align:center;margin-bottom:56px}
+.section-tag{
+  display:inline-block;
+  font-size:.75rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.1em;
+  color:var(--accent-cyan);
+  margin-bottom:12px;
+}
+.section-title{
+  font-size:clamp(1.8rem,4vw,2.8rem);
+  font-weight:800;letter-spacing:-.03em;
+  margin-bottom:16px;
+}
+.section-desc{
+  color:var(--text-secondary);font-size:1.05rem;
+  max-width:600px;margin:0 auto;
+}
+
+/* ---- Ranking Table ---- */
+.ranking-controls{
+  display:flex;flex-wrap:wrap;gap:8px;justify-content:center;
+  margin-bottom:32px;
+}
+.ranking-controls button{
+  padding:8px 18px;border-radius:999px;
+  background:var(--bg-card);border:1px solid var(--border-subtle);
+  color:var(--text-secondary);font-size:.82rem;font-weight:600;
+  cursor:pointer;transition:var(--transition);
+  font-family:var(--font-sans);
+}
+.ranking-controls button:hover{border-color:var(--accent-blue);color:var(--text-primary)}
+.ranking-controls button.active{
+  background:var(--accent-blue);border-color:var(--accent-blue);color:#fff;
+}
+
+.ranking-table{
+  width:100%;border-collapse:separate;border-spacing:0;
+  background:var(--bg-card);border-radius:var(--radius-lg);
+  overflow:hidden;box-shadow:var(--shadow-card);
+}
+.ranking-table thead th{
+  background:var(--bg-secondary);
+  padding:14px 20px;
+  text-align:left;font-size:.75rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.08em;
+  color:var(--text-muted);
+  border-bottom:1px solid var(--border-subtle);
+}
+.ranking-table tbody tr{
+  transition:var(--transition);cursor:pointer;
+}
+.ranking-table tbody tr:hover{background:var(--bg-card-hover)}
+.ranking-table tbody td{
+  padding:16px 20px;
+  border-bottom:1px solid var(--border-subtle);
+  font-size:.9rem;
+}
+.ranking-table tbody tr:last-child td{border-bottom:none}
+.rank-num{
+  font-weight:800;font-size:1.1rem;
+  width:48px;text-align:center;
+}
+.rank-1 .rank-num{color:var(--accent-amber)}
+.rank-2 .rank-num{color:#c0c0c0}
+.rank-3 .rank-num{color:#cd7f32}
+.lang-name{font-weight:700;display:flex;align-items:center;gap:10px}
+.lang-icon{
+  width:32px;height:32px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;font-weight:800;flex-shrink:0;
+}
+.tier-badge{
+  display:inline-block;padding:3px 10px;border-radius:999px;
+  font-size:.72rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.04em;
+}
+.tier-expert{background:rgba(16,185,129,.15);color:var(--accent-emerald)}
+.tier-strong{background:rgba(59,130,246,.15);color:var(--accent-blue)}
+.tier-competent{background:rgba(139,92,246,.15);color:var(--accent-violet)}
+.tier-adequate{background:rgba(249,115,22,.15);color:var(--accent-orange)}
+.tier-limited{background:rgba(244,63,94,.15);color:var(--accent-rose)}
+
+.score-bar-container{display:flex;align-items:center;gap:12px;min-width:200px}
+.score-bar{
+  flex:1;height:8px;border-radius:4px;
+  background:rgba(255,255,255,.06);overflow:hidden;
+}
+.score-bar-fill{
+  height:100%;border-radius:4px;
+  transition:width .8s cubic-bezier(.4,0,.2,1);
+}
+.score-value{font-weight:800;font-size:.95rem;min-width:42px;text-align:right}
+
+.lines-value{
+  font-family:var(--font-mono);font-size:.85rem;color:var(--text-secondary);
+}
+
+/* Responsive table */
+@media(max-width:768px){
+  .ranking-table{font-size:.82rem}
+  .ranking-table thead th,.ranking-table tbody td{padding:10px 12px}
+  .hide-mobile{display:none}
+  .score-bar-container{min-width:120px}
+}
+
+/* ---- Charts ---- */
+.charts-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(500px,1fr));
+  gap:24px;
+}
+@media(max-width:560px){.charts-grid{grid-template-columns:1fr}}
+.chart-card{
+  background:var(--bg-card);border-radius:var(--radius-lg);
+  padding:28px;box-shadow:var(--shadow-card);
+}
+.chart-card h3{
+  font-size:1rem;font-weight:700;margin-bottom:20px;
+  display:flex;align-items:center;gap:8px;
+}
+.chart-card canvas{width:100%!important}
+
+/* ---- Language Details ---- */
+.lang-details-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px}
+.lang-card{
+  background:var(--gradient-card);border-radius:var(--radius-lg);
+  border:1px solid var(--border-subtle);
+  overflow:hidden;transition:var(--transition);
+}
+.lang-card:hover{border-color:rgba(59,130,246,.3);box-shadow:var(--shadow-glow)}
+.lang-card-header{
+  padding:20px 24px;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.lang-card-header-left{display:flex;align-items:center;gap:14px}
+.lang-card-header h3{font-size:1rem;font-weight:700}
+.lang-card-header .score{
+  font-size:.85rem;font-weight:800;
+  padding:4px 12px;border-radius:999px;
+  background:rgba(59,130,246,.15);color:var(--accent-blue);
+}
+.lang-card-toggle{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.04);
+  transition:var(--transition);color:var(--text-muted);font-size:.85rem;
+}
+.lang-card.open .lang-card-toggle{transform:rotate(180deg)}
+.lang-card-body{
+  max-height:0;overflow:hidden;
+  transition:max-height .4s cubic-bezier(.4,0,.2,1);
+}
+.lang-card.open .lang-card-body{max-height:2000px}
+.lang-card-content{padding:0 24px 24px}
+.lang-card-content h4{
+  font-size:.82rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--accent-cyan);margin:16px 0 8px;
+}
+.lang-card-content ul{list-style:none;padding:0}
+.lang-card-content li{
+  position:relative;padding-left:18px;margin-bottom:6px;
+  font-size:.88rem;color:var(--text-secondary);line-height:1.5;
+}
+.lang-card-content li::before{
+  content:'';position:absolute;left:0;top:8px;
+  width:6px;height:6px;border-radius:50%;
+}
+.strength-item::before{background:var(--accent-emerald)}
+.weakness-item::before{background:var(--accent-rose)}
+
+/* ---- Code Block ---- */
+.code-block{
+  position:relative;margin:12px 0;
+  background:#0d1117;border-radius:var(--radius-sm);
+  border:1px solid var(--border-subtle);overflow:hidden;
+}
+.code-block-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;background:rgba(255,255,255,.03);
+  border-bottom:1px solid var(--border-subtle);
+}
+.code-block-lang{font-size:.72rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em}
+.copy-btn{
+  padding:4px 12px;border-radius:6px;
+  background:rgba(255,255,255,.06);border:1px solid var(--border-subtle);
+  color:var(--text-secondary);font-size:.72rem;font-weight:600;
+  cursor:pointer;transition:var(--transition);font-family:var(--font-sans);
+}
+.copy-btn:hover{background:rgba(255,255,255,.1);color:var(--text-primary)}
+.copy-btn.copied{background:rgba(16,185,129,.15);color:var(--accent-emerald);border-color:rgba(16,185,129,.3)}
+pre{margin:0;overflow-x:auto}
+pre code{
+  display:block;padding:16px;
+  font-family:var(--font-mono);font-size:.82rem;line-height:1.7;
+  color:var(--text-secondary);
+}
+/* Syntax highlighting */
+.kw{color:#ff7b72}.fn{color:#d2a8ff}.str{color:#a5d6ff}.num{color:#79c0ff}
+.cm{color:#8b949e;font-style:italic}.op{color:#ff7b72}.ty{color:#ffa657}
+.pp{color:#ffa657}.var{color:#ffa657}
+
+/* ---- Findings ---- */
+.findings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.finding-card{
+  background:var(--bg-card);border-radius:var(--radius-lg);
+  padding:28px;box-shadow:var(--shadow-card);
+  border-left:3px solid;
+  transition:var(--transition);
+}
+.finding-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-card),var(--shadow-glow)}
+.finding-card.blue{border-color:var(--accent-blue)}
+.finding-card.violet{border-color:var(--accent-violet)}
+.finding-card.emerald{border-color:var(--accent-emerald)}
+.finding-card.amber{border-color:var(--accent-amber)}
+.finding-card.rose{border-color:var(--accent-rose)}
+.finding-card.cyan{border-color:var(--accent-cyan)}
+.finding-icon{font-size:1.8rem;margin-bottom:12px}
+.finding-card h3{font-size:1rem;font-weight:700;margin-bottom:8px}
+.finding-card p{font-size:.88rem;color:var(--text-secondary);line-height:1.6}
+
+/* ---- Methodology ---- */
+.method-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.method-step{
+  background:var(--bg-card);border-radius:var(--radius-lg);
+  padding:24px;box-shadow:var(--shadow-card);
+  position:relative;
+}
+.method-step-num{
+  font-size:2.5rem;font-weight:900;
+  background:var(--gradient-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  opacity:.3;position:absolute;top:16px;right:20px;
+}
+.method-step h3{font-size:.95rem;font-weight:700;margin-bottom:8px}
+.method-step p{font-size:.85rem;color:var(--text-secondary);line-height:1.6}
+
+/* ---- Tier List ---- */
+.tier-list{display:flex;flex-direction:column;gap:16px;max-width:800px;margin:0 auto}
+.tier-row{
+  display:flex;align-items:stretch;border-radius:var(--radius);overflow:hidden;
+  background:var(--bg-card);box-shadow:var(--shadow-card);
+}
+.tier-label{
+  width:120px;min-width:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:16px;font-weight:800;font-size:1rem;
+  gap:2px;
+}
+.tier-label small{font-size:.65rem;font-weight:600;opacity:.6;text-transform:uppercase;letter-spacing:.06em}
+.tier-items{
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px;
+  padding:14px 20px;flex:1;
+}
+.tier-item{
+  padding:8px 16px;border-radius:var(--radius-sm);
+  font-size:.85rem;font-weight:600;
+  background:rgba(255,255,255,.04);border:1px solid var(--border-subtle);
+  transition:var(--transition);
+}
+.tier-item:hover{background:rgba(255,255,255,.08)}
+.tier-expert-row .tier-label{background:rgba(16,185,129,.15);color:var(--accent-emerald)}
+.tier-strong-row .tier-label{background:rgba(59,130,246,.15);color:var(--accent-blue)}
+.tier-competent-row .tier-label{background:rgba(139,92,246,.15);color:var(--accent-violet)}
+.tier-adequate-row .tier-label{background:rgba(249,115,22,.15);color:var(--accent-orange)}
+.tier-limited-row .tier-label{background:rgba(244,63,94,.15);color:var(--accent-rose)}
+
+@media(max-width:560px){
+  .tier-label{width:70px;min-width:70px;font-size:.8rem}
+  .tier-label small{display:none}
+  .tier-item{font-size:.78rem;padding:6px 12px}
+}
+
+/* ---- Memory Spectrum ---- */
+.spectrum{
+  display:flex;flex-direction:column;gap:12px;max-width:800px;margin:0 auto;
+}
+.spectrum-row{
+  display:flex;align-items:center;gap:16px;
+  padding:12px 20px;background:var(--bg-card);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-card);
+}
+.spectrum-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.spectrum-label{font-weight:700;font-size:.88rem;min-width:180px}
+.spectrum-langs{font-size:.85rem;color:var(--text-secondary)}
+@media(max-width:560px){.spectrum-label{min-width:120px;font-size:.8rem}}
+
+/* ---- Footer ---- */
+.footer{
+  border-top:1px solid var(--border-subtle);
+  padding:40px 24px;text-align:center;
+}
+.footer p{color:var(--text-muted);font-size:.85rem}
+.footer a{color:var(--accent-blue)}
+
+/* ---- Utils ---- */
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+.bg-alt{background:var(--bg-secondary)}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">AICOP</div>
+    <div class="nav-links">
+      <a href="#ranking">Ranking</a>
+      <a href="#visualizations">Charts</a>
+      <a href="#details">Languages</a>
+      <a href="#findings">Findings</a>
+      <a href="#methodology">Methodology</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-badge">
+    <span class="pulse"></span>
+    Research Report 2025
+  </div>
+  <h1>How Well Does AI<br><span class="gradient">Write Code?</span></h1>
+  <p class="hero-subtitle">
+    A comprehensive analysis of Claude's competitive programming solutions across 11 languages &mdash; from Python to x86-64 Assembly. Measuring idioms, performance, memory management, and code quality.
+  </p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-value">11</div>
+      <div class="hero-stat-label">Languages</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value">5</div>
+      <div class="hero-stat-label">Problems</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value">55</div>
+      <div class="hero-stat-label">Solutions</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value">6.4K</div>
+      <div class="hero-stat-label">Lines of Code</div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+  </div>
+</section>
+
+<!-- Ranking -->
+<section class="section bg-alt" id="ranking">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <div class="section-tag">Language Ranking</div>
+      <h2 class="section-title">Competency Scores</h2>
+      <p class="section-desc">Languages ranked by how idiomatically and correctly Claude uses each one for competitive programming.</p>
+    </div>
+    <div class="ranking-controls fade-in">
+      <button class="active" data-sort="score">By Score</button>
+      <button data-sort="lines">By Lines of Code</button>
+      <button data-sort="name">Alphabetical</button>
+    </div>
+    <div class="fade-in" style="overflow-x:auto">
+      <table class="ranking-table" id="rankingTable">
+        <thead>
+          <tr>
+            <th style="width:50px">#</th>
+            <th>Language</th>
+            <th>Tier</th>
+            <th>Score</th>
+            <th class="hide-mobile">Lines</th>
+            <th class="hide-mobile">Ratio</th>
+          </tr>
+        </thead>
+        <tbody id="rankingBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Tier List -->
+<section class="section" id="tiers">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <div class="section-tag">Tier Classification</div>
+      <h2 class="section-title">Language Tier List</h2>
+      <p class="section-desc">From expert-level fluency to impressive but limited scope.</p>
+    </div>
+    <div class="tier-list fade-in">
+      <div class="tier-row tier-expert-row">
+        <div class="tier-label">S<small>Expert</small></div>
+        <div class="tier-items">
+          <div class="tier-item">Python</div>
+          <div class="tier-item">C++</div>
+        </div>
+      </div>
+      <div class="tier-row tier-strong-row">
+        <div class="tier-label">A<small>Strong</small></div>
+        <div class="tier-items">
+          <div class="tier-item">Rust</div>
+          <div class="tier-item">Julia</div>
+          <div class="tier-item">C</div>
+        </div>
+      </div>
+      <div class="tier-row tier-competent-row">
+        <div class="tier-label">B<small>Competent</small></div>
+        <div class="tier-items">
+          <div class="tier-item">Go</div>
+          <div class="tier-item">Factor</div>
+        </div>
+      </div>
+      <div class="tier-row tier-adequate-row">
+        <div class="tier-label">C<small>Adequate</small></div>
+        <div class="tier-items">
+          <div class="tier-item">TypeScript</div>
+          <div class="tier-item">Zig</div>
+          <div class="tier-item">Ruby</div>
+        </div>
+      </div>
+      <div class="tier-row tier-limited-row">
+        <div class="tier-label">D<small>Limited</small></div>
+        <div class="tier-items">
+          <div class="tier-item">Assembly x86-64</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Visualizations -->
+<section class="section bg-alt" id="visualizations">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <div class="section-tag">Data Visualizations</div>
+      <h2 class="section-title">Comparative Analysis</h2>
+      <p class="section-desc">Visual breakdown of lines of code, scores, and complexity across all 11 languages.</p>
+    </div>
+    <div class="charts-grid">
+      <div class="chart-card fade-in">
+        <h3>Lines of Code by Problem</h3>
+        <canvas id="chartLOC" height="300"></canvas>
+      </div>
+      <div class="chart-card fade-in">
+        <h3>Score vs Lines of Code</h3>
+        <canvas id="chartScatter" height="300"></canvas>
+      </div>
+      <div class="chart-card fade-in">
+        <h3>Boilerplate Percentage</h3>
+        <canvas id="chartBoilerplate" height="300"></canvas>
+      </div>
+      <div class="chart-card fade-in">
+        <h3>Competency Radar</h3>
+        <canvas id="chartRadar" height="300"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Language Details -->
+<section class="section" id="details">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <div class="section-tag">Deep Dive</div>
+      <h2 class="section-title">Language-by-Language Analysis</h2>
+      <p class="section-desc">Expand each card to see strengths, weaknesses, and notable code examples.</p>
+    </div>
+    <div class="lang-details-grid" id="langDetails"></div>
+  </div>
+</section>
+
+<!-- Code Examples -->
+<section class="section bg-alt" id="code-examples">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <div class="section-tag">Code Showcase</div>
+      <h2 class="section-title">Best Code Examples</h2>
+      <p class="section-desc">Side-by-side comparisons of the same algorithm across different languages.</p>
+    </div>
+    <div class="charts-grid">
+      <div class="chart-card fade-in">
+        <h3>Dijkstra Min-Heap &mdash; C++</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-block-lang">C++</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+<pre><code><span class="ty">priority_queue</span>&lt;<span class="ty">pair</span>&lt;<span class="kw">long long</span>, <span class="kw">int</span>&gt;,
+  <span class="ty">vector</span>&lt;<span class="ty">pair</span>&lt;<span class="kw">long long</span>, <span class="kw">int</span>&gt;&gt;, <span class="ty">greater</span>&lt;&gt;&gt; pq;
+pq.<span class="fn">emplace</span>(<span class="num">0</span>, <span class="num">1</span>);
+
+<span class="kw">while</span> (!pq.<span class="fn">empty</span>()) {
+    <span class="kw">auto</span> [d, u] = pq.<span class="fn">top</span>();
+    pq.<span class="fn">pop</span>();
+    <span class="kw">if</span> (d > dist[u]) <span class="kw">continue</span>;
+    <span class="kw">for</span> (<span class="kw">auto</span> [v, w] : adj[u]) {
+        <span class="kw">if</span> (dist[u] + w < dist[v]) {
+            dist[v] = dist[u] + w;
+            pq.<span class="fn">emplace</span>(dist[v], v);
+        }
+    }
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="chart-card fade-in">
+        <h3>Dijkstra Min-Heap &mdash; Rust</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-block-lang">Rust</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+<pre><code>heap.<span class="fn">push</span>(<span class="ty">Reverse</span>((<span class="num">0i64</span>, <span class="num">1usize</span>)));
+
+<span class="kw">while let</span> <span class="ty">Some</span>(<span class="ty">Reverse</span>((d, u))) = heap.<span class="fn">pop</span>() {
+    <span class="kw">if</span> d > dist[u] { <span class="kw">continue</span>; }
+    <span class="kw">for</span> &(v, w) <span class="kw">in</span> &adj[u] {
+        <span class="kw">let</span> nd = dist[u] + w;
+        <span class="kw">if</span> nd < dist[v] {
+            dist[v] = nd;
+            heap.<span class="fn">push</span>(<span class="ty">Reverse</span>((nd, v)));
+        }
+    }
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="chart-card fade-in">
+        <h3>LIS &mdash; C++ (31 lines total)</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-block-lang">C++</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+<pre><code><span class="ty">vector</span>&lt;<span class="kw">int</span>&gt; tails;
+<span class="kw">for</span> (<span class="kw">int</span> x : nums) {
+    <span class="kw">auto</span> it = <span class="fn">lower_bound</span>(tails.<span class="fn">begin</span>(),
+                         tails.<span class="fn">end</span>(), x);
+    <span class="kw">if</span> (it == tails.<span class="fn">end</span>())
+        tails.<span class="fn">push_back</span>(x);
+    <span class="kw">else</span>
+        *it = x;
+}
+cout << tails.<span class="fn">size</span>() << <span class="str">"\n"</span>;</code></pre>
+        </div>
+      </div>
+
+      <div class="chart-card fade-in">
+        <h3>Matrix Exponentiation &mdash; TypeScript</h3>
+        <div class="code-block">
+          <div class="code-block-header">
+            <span class="code-block-lang">TypeScript</span>
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          </div>
+<pre><code><span class="kw">const</span> MOD = <span class="num">1000000007n</span>;
+<span class="kw">type</span> <span class="ty">Matrix</span> = [<span class="ty">bigint</span>,<span class="ty">bigint</span>,<span class="ty">bigint</span>,<span class="ty">bigint</span>];
+
+<span class="kw">function</span> <span class="fn">matMul</span>(a: <span class="ty">Matrix</span>, b: <span class="ty">Matrix</span>): <span class="ty">Matrix</span> {
+  <span class="kw">return</span> [
+    (a[<span class="num">0</span>]*b[<span class="num">0</span>] + a[<span class="num">1</span>]*b[<span class="num">2</span>]) % MOD,
+    (a[<span class="num">0</span>]*b[<span class="num">1</span>] + a[<span class="num">1</span>]*b[<span class="num">3</span>]) % MOD,
+    (a[<span class="num">2</span>]*b[<span class="num">0</span>] + a[<span class="num">3</span>]*b[<span class="num">2</span>]) % MOD,
+    (a[<span class="num">2</span>]*b[<span class="num">1</span>] + a[<span class="num">3</span>]*b[<span class="num">3</span>]) % MOD,
+  ];
+}</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Key Findings -->
+<section class="section" id="findings">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <div class="section-tag">Key Findings</div>
+      <h2 class="section-title">What We Discovered</h2>
+      <p class="section-desc">The most surprising and insightful results from the analysis.</p>
+    </div>
+    <div class="findings-grid">
+      <div class="finding-card blue fade-in">
+        <div class="finding-icon">&#127942;</div>
+        <h3>C++ Shatters the Verbosity Myth</h3>
+        <p>C++ is the second most concise language at just 285 total lines &mdash; only 12 more than Factor. Modern C++17 with STL makes it remarkably compact for competitive programming.</p>
+      </div>
+      <div class="finding-card violet fade-in">
+        <div class="finding-icon">&#128270;</div>
+        <h3>Translation Bias Persists</h3>
+        <p>All 55 implementations share identical algorithmic structure and variable names (<code>dist</code>, <code>adj</code>, <code>heap</code>, <code>tails</code>), confirming they were generated from a single mental model.</p>
+      </div>
+      <div class="finding-card emerald fade-in">
+        <div class="finding-icon">&#128640;</div>
+        <h3>Rust Delivers on Promises</h3>
+        <p>Zero-cost abstractions, memory safety, and 289 total lines. The <code>BinaryHeap</code> + <code>Reverse</code> pattern is elegant. Main gap: <code>.unwrap()</code> overuse.</p>
+      </div>
+      <div class="finding-card amber fade-in">
+        <div class="finding-icon">&#128533;</div>
+        <h3>TypeScript: Biggest Disappointment</h3>
+        <p>The type system is TS's defining feature, yet solutions use it at a JavaScript+annotations level. No interfaces, no generics, no classes for data structures.</p>
+      </div>
+      <div class="finding-card rose fade-in">
+        <div class="finding-icon">&#128165;</div>
+        <h3>Assembly at Scale</h3>
+        <p>555 lines for a Segment Tree in raw x86-64 is impressive scope, but Dijkstra was downgraded to O(N&sup2;) &mdash; the only algorithmic regression across all 55 solutions.</p>
+      </div>
+      <div class="finding-card cyan fade-in">
+        <div class="finding-icon">&#128202;</div>
+        <h3>Memory Model Spectrum</h3>
+        <p>The 11 languages span every memory model: pure GC (Python, Ruby, TS, Factor), GC with tuning (Go, Julia), ownership (Rust), RAII (C++), manual with defer (Zig), full manual (C), static only (Assembly).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Memory Spectrum -->
+<section class="section bg-alt" id="memory">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <div class="section-tag">Memory Management</div>
+      <h2 class="section-title">The Full Spectrum</h2>
+      <p class="section-desc">From garbage collection to raw static BSS &mdash; every model represented.</p>
+    </div>
+    <div class="spectrum fade-in">
+      <div class="spectrum-row"><div class="spectrum-dot" style="background:var(--accent-emerald)"></div><div class="spectrum-label">Pure GC</div><div class="spectrum-langs">Python, Ruby, TypeScript, Factor</div></div>
+      <div class="spectrum-row"><div class="spectrum-dot" style="background:var(--accent-cyan)"></div><div class="spectrum-label">GC with awareness</div><div class="spectrum-langs">Go, Julia</div></div>
+      <div class="spectrum-row"><div class="spectrum-dot" style="background:var(--accent-blue)"></div><div class="spectrum-label">Ownership (compile-time)</div><div class="spectrum-langs">Rust</div></div>
+      <div class="spectrum-row"><div class="spectrum-dot" style="background:var(--accent-violet)"></div><div class="spectrum-label">RAII (scope-based)</div><div class="spectrum-langs">C++</div></div>
+      <div class="spectrum-row"><div class="spectrum-dot" style="background:var(--accent-amber)"></div><div class="spectrum-label">Manual with defer</div><div class="spectrum-langs">Zig</div></div>
+      <div class="spectrum-row"><div class="spectrum-dot" style="background:var(--accent-orange)"></div><div class="spectrum-label">Full manual</div><div class="spectrum-langs">C</div></div>
+      <div class="spectrum-row"><div class="spectrum-dot" style="background:var(--accent-rose)"></div><div class="spectrum-label">Static BSS only</div><div class="spectrum-langs">Assembly x86-64</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Methodology -->
+<section class="section" id="methodology">
+  <div class="section-inner">
+    <div class="section-header fade-in">
+      <div class="section-tag">Methodology</div>
+      <h2 class="section-title">How We Evaluated</h2>
+      <p class="section-desc">A systematic approach to measuring AI code generation quality.</p>
+    </div>
+    <div class="method-grid fade-in">
+      <div class="method-step">
+        <div class="method-step-num">01</div>
+        <h3>Problem Selection</h3>
+        <p>5 classic competitive programming problems: Dijkstra's shortest path, KMP string matching, Longest Increasing Subsequence, Matrix Exponentiation, and Segment Tree range queries.</p>
+      </div>
+      <div class="method-step">
+        <div class="method-step-num">02</div>
+        <h3>Language Coverage</h3>
+        <p>11 languages spanning the full abstraction spectrum: Python, Ruby, Go, Zig, C, Assembly x86-64, Julia, Factor, TypeScript, Rust, and C++.</p>
+      </div>
+      <div class="method-step">
+        <div class="method-step-num">03</div>
+        <h3>Evaluation Criteria</h3>
+        <p>Idiomatic usage, stdlib utilization, optimization awareness, memory management, error handling, readability, code complexity, and boilerplate ratio.</p>
+      </div>
+      <div class="method-step">
+        <div class="method-step-num">04</div>
+        <h3>Scoring Framework</h3>
+        <p>Each language scored 1-10 on idiom adherence, with detailed analysis of strengths, weaknesses, and comparison against expert-level patterns for each language.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:40px">
+      <h3 style="text-align:center;font-size:1.1rem;font-weight:700;margin-bottom:24px" class="fade-in">Problems Evaluated</h3>
+      <div class="findings-grid fade-in">
+        <div class="finding-card blue">
+          <h3>Dijkstra's Shortest Path</h3>
+          <p>Weighted graph shortest path with priority queue. O((N+M) log N) complexity. Tests heap usage, graph representation, and I/O handling.</p>
+        </div>
+        <div class="finding-card violet">
+          <h3>KMP String Matching</h3>
+          <p>Knuth-Morris-Pratt pattern matching. O(N+M) complexity. Tests string handling, prefix function computation, and output formatting.</p>
+        </div>
+        <div class="finding-card emerald">
+          <h3>Longest Increasing Subsequence</h3>
+          <p>Patience sorting with binary search. O(N log N) complexity. Tests stdlib binary search usage and array manipulation.</p>
+        </div>
+        <div class="finding-card amber">
+          <h3>Matrix Exponentiation</h3>
+          <p>Fast Fibonacci via 2x2 matrix power. O(log N) complexity. Tests numeric overflow handling and matrix representation.</p>
+        </div>
+        <div class="finding-card cyan">
+          <h3>Segment Tree Range Queries</h3>
+          <p>Build, point update, range sum query. O(N + Q log N) complexity. Tests data structure encapsulation and buffered I/O.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>AICOP &mdash; AI Coding Capabilities Report &middot; Built to analyze Claude's programming skills across 11 languages</p>
+  <p style="margin-top:8px">
+    <a href="https://github.com/kidandcat/aicop" target="_blank" rel="noopener">View on GitHub</a>
+  </p>
+</footer>
+
+<script>
+// ---- Data ----
+const languages = [
+  { name:'Python',     score:9,   tier:'Expert',    tierClass:'tier-expert',    lines:304, ratio:'1.11x', color:'#3572A5', abbr:'PY', strengths:['Consistently uses most appropriate stdlib tools (heapq, bisect_left)','Clean separation of concerns','Nested closures in Segment Tree are elegant','sys.stdin.buffer.read() for fast bulk I/O'], weaknesses:['No type annotations','Index-based tokenizer pattern is less Pythonic'] },
+  { name:'C++',        score:9,   tier:'Expert',    tierClass:'tier-expert',    lines:285, ratio:'1.04x', color:'#f34b7d', abbr:'C+', strengths:['Perfect STL usage (priority_queue, lower_bound)','Modern C++17: structured bindings, greater<>','Class-based SegTree with const correctness','Zero manual memory management (all RAII)','Most concise compiled language'], weaknesses:['using namespace std (acceptable in CP)','No [[nodiscard]], constexpr, or modern attributes','Matrix multiplication relies on long long range'] },
+  { name:'Rust',       score:8.5, tier:'Strong',    tierClass:'tier-strong',    lines:289, ratio:'1.06x', color:'#dea584', abbr:'RS', strengths:['BinaryHeap + Reverse idiom for min-heap','BufWriter for output-heavy problems','struct + impl in Segment Tree','Iterator chains for functional parsing','while let pattern matching'], weaknesses:['.unwrap() abuse everywhere','Manual lower_bound (partition_point exists)','Same excessive %MOD pattern as C/Go'] },
+  { name:'Julia',      score:8.5, tier:'Strong',    tierClass:'tier-strong',    lines:470, ratio:'1.72x', color:'#a270ba', abbr:'JL', strengths:['Multiple dispatch used meaningfully','@inbounds for performance-critical paths','Value-type Mat2 for zero-allocation matrix math','Int128 widening for overflow prevention','Best documentation across all languages'], weaknesses:['Manual MinHeap when DataStructures.jl provides one','Some solutions longer due to thorough docs','Over-engineered heap with @inline annotations'] },
+  { name:'C',          score:8,   tier:'Strong',    tierClass:'tier-strong',    lines:529, ratio:'1.94x', color:'#555555', abbr:'C',  strengths:['Clean struct-based abstractions','Complete memory lifecycle (every malloc has free)','getline() for robust string reading','Output buffering with sprintf'], weaknesses:['Excessive %MOD in matrix multiplication','No scanf return value checking'] },
+  { name:'Go',         score:7.5, tier:'Competent', tierClass:'tier-competent', lines:440, ratio:'1.61x', color:'#00ADD8', abbr:'GO', strengths:['Correct container/heap interface usage','Proper bufio buffering for I/O','sort.SearchInts used appropriately','Clean struct types for domain concepts'], weaknesses:['Excessive %MOD in Matrix Exponentiation','Unbuffered fmt.Scan (inconsistent)','Error values universally ignored'] },
+  { name:'Factor',     score:7,   tier:'Competent', tierClass:'tier-competent', lines:273, ratio:'1.00x', color:'#636746', abbr:'FA', strengths:['Most concise language by line count','<min-heap> vocabulary in Dijkstra','Good use of :> local bindings for readability'], weaknesses:['Overreliance on :: locals','No use of Factor object system (TUPLE:)','No output buffering (slowest I/O)','Missing bi, tri, bi@ combinators'] },
+  { name:'TypeScript', score:6.5, tier:'Adequate',  tierClass:'tier-adequate',  lines:294, ratio:'1.08x', color:'#3178c6', abbr:'TS', strengths:['BigInt for Matrix Exponentiation (cleanest overflow fix)','Consistent I/O pattern across all files','Output buffering with string[] join','Creative flat tuple Matrix type'], weaknesses:['No interfaces &mdash; everything is [number, number] tuples','No generics &mdash; heap is hardcoded','No readonly, as const, or immutable patterns','No class-based data structures','Reads like JavaScript with type annotations'] },
+  { name:'Zig',        score:6.5, tier:'Adequate',  tierClass:'tier-adequate',  lines:523, ratio:'1.92x', color:'#ec915c', abbr:'ZG', strengths:['Correct use of std.PriorityQueue','u128 cast for overflow prevention','Proper defer cleanup pattern','Custom streaming I/O shows advanced knowledge'], weaknesses:['Inconsistent allocator choice across problems','Manual lowerBound (std.sort.lowerBound exists)','Mixed error handling: try vs catch return','Static MAX_N wastes memory'] },
+  { name:'Ruby',       score:6,   tier:'Adequate',  tierClass:'tier-adequate',  lines:351, ratio:'1.29x', color:'#701516', abbr:'RB', strengths:['bsearch_index in LIS &mdash; good stdlib usage','Correct lambda usage for recursion','Clean I/O patterns'], weaknesses:['Custom MinHeap is Java-esque, not Ruby-esque','No use of blocks, Enumerable, Struct, inject','Solutions read like Python transliterations','Lambda-based recursion in SegTree is awkward'] },
+  { name:'Assembly',   score:5.5, tier:'Limited',   tierClass:'tier-limited',   lines:1875,ratio:'6.87x', color:'#6E4C13', abbr:'AS', strengths:['Consistent coding style across 5 solutions','Correct callee-saved vs caller-saved registers','Proper stack alignment maintained','Thorough comments documenting arguments'], weaknesses:['Dijkstra downgraded to O(N\u00b2)','No dynamic memory (limits problem sizes)','Copy-pasted utility functions (~80 lines each)','No SIMD instructions or vectorization'] },
+];
+
+const locByProblem = {
+  labels:['Dijkstra','KMP','LIS','Matrix Exp.','Segment Tree'],
+  datasets:[
+    {label:'Python',     data:[55,92,37,41,79],     borderColor:'#3572A5',backgroundColor:'#3572A530'},
+    {label:'C++',        data:[46,71,31,50,87],      borderColor:'#f34b7d',backgroundColor:'#f34b7d30'},
+    {label:'Rust',       data:[46,68,41,49,85],      borderColor:'#dea584',backgroundColor:'#dea58430'},
+    {label:'TypeScript', data:[73,66,42,43,70],      borderColor:'#3178c6',backgroundColor:'#3178c630'},
+    {label:'Go',         data:[96,115,53,57,119],    borderColor:'#00ADD8',backgroundColor:'#00ADD830'},
+    {label:'C',          data:[181,111,62,72,103],   borderColor:'#555',   backgroundColor:'#55555530'},
+    {label:'Assembly',   data:[373,357,237,354,554], borderColor:'#6E4C13',backgroundColor:'#6E4C1320'},
+  ]
+};
+
+// ---- Render Ranking Table ----
+function renderRanking(sortBy) {
+  const sorted = [...languages];
+  if (sortBy === 'score') sorted.sort((a,b) => b.score - a.score || a.lines - b.lines);
+  else if (sortBy === 'lines') sorted.sort((a,b) => a.lines - b.lines);
+  else sorted.sort((a,b) => a.name.localeCompare(b.name));
+
+  const tbody = document.getElementById('rankingBody');
+  tbody.innerHTML = '';
+  sorted.forEach((lang, i) => {
+    const pct = (lang.score / 10) * 100;
+    const scoreColor = lang.score >= 8.5 ? 'var(--accent-emerald)' : lang.score >= 7.5 ? 'var(--accent-blue)' : lang.score >= 7 ? 'var(--accent-violet)' : lang.score >= 6 ? 'var(--accent-amber)' : 'var(--accent-rose)';
+    const rankClass = sortBy === 'score' ? (i < 1 ? 'rank-1' : i < 2 ? 'rank-2' : i < 3 ? 'rank-3' : '') : '';
+    const tr = document.createElement('tr');
+    tr.className = rankClass;
+    tr.innerHTML = `
+      <td class="rank-num">${i + 1}</td>
+      <td><div class="lang-name"><div class="lang-icon" style="background:${lang.color}20;color:${lang.color}">${lang.abbr}</div>${lang.name}</div></td>
+      <td><span class="tier-badge ${lang.tierClass}">${lang.tier}</span></td>
+      <td><div class="score-bar-container"><div class="score-bar"><div class="score-bar-fill" style="width:${pct}%;background:${scoreColor}"></div></div><span class="score-value" style="color:${scoreColor}">${lang.score}</span></div></td>
+      <td class="hide-mobile"><span class="lines-value">${lang.lines.toLocaleString()}</span></td>
+      <td class="hide-mobile"><span class="lines-value">${lang.ratio}</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// Sort buttons
+document.querySelectorAll('.ranking-controls button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.ranking-controls button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderRanking(btn.dataset.sort);
+  });
+});
+renderRanking('score');
+
+// ---- Render Language Detail Cards ----
+const detailsContainer = document.getElementById('langDetails');
+languages.forEach(lang => {
+  const card = document.createElement('div');
+  card.className = 'lang-card fade-in';
+  card.innerHTML = `
+    <div class="lang-card-header" onclick="this.parentElement.classList.toggle('open')">
+      <div class="lang-card-header-left">
+        <div class="lang-icon" style="background:${lang.color}20;color:${lang.color}">${lang.abbr}</div>
+        <h3>${lang.name}</h3>
+        <span class="score">${lang.score}/10</span>
+      </div>
+      <div class="lang-card-toggle">&#9660;</div>
+    </div>
+    <div class="lang-card-body">
+      <div class="lang-card-content">
+        <h4>Strengths</h4>
+        <ul>${lang.strengths.map(s => `<li class="strength-item">${s}</li>`).join('')}</ul>
+        <h4>Weaknesses</h4>
+        <ul>${lang.weaknesses.map(w => `<li class="weakness-item">${w}</li>`).join('')}</ul>
+        <div style="margin-top:16px;display:flex;gap:16px;flex-wrap:wrap;font-size:.82rem;color:var(--text-muted)">
+          <span>Lines: <strong style="color:var(--text-primary)">${lang.lines}</strong></span>
+          <span>Ratio: <strong style="color:var(--text-primary)">${lang.ratio}</strong></span>
+          <span>Tier: <strong style="color:var(--text-primary)">${lang.tier}</strong></span>
+        </div>
+      </div>
+    </div>
+  `;
+  detailsContainer.appendChild(card);
+});
+
+// ---- Charts ----
+const chartFont = {family:'Inter, sans-serif'};
+const chartGrid = {color:'rgba(255,255,255,.06)'};
+const chartTick = {color:'#64748b',font:{size:11,family:'Inter'}};
+
+Chart.defaults.color = '#94a3b8';
+Chart.defaults.font.family = 'Inter, sans-serif';
+
+// LOC by Problem (Line chart)
+new Chart(document.getElementById('chartLOC'), {
+  type:'line',
+  data:locByProblem,
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'bottom',labels:{boxWidth:12,padding:16,font:{size:11}}}},
+    scales:{
+      x:{grid:chartGrid,ticks:chartTick},
+      y:{grid:chartGrid,ticks:chartTick,title:{display:true,text:'Lines of Code',color:'#64748b',font:{size:11}}}
+    }
+  }
+});
+
+// Scatter: Score vs LOC
+new Chart(document.getElementById('chartScatter'), {
+  type:'scatter',
+  data:{
+    datasets:[{
+      label:'Languages',
+      data: languages.map(l => ({x:l.lines, y:l.score, name:l.name})),
+      backgroundColor: languages.map(l => l.color + 'cc'),
+      borderColor: languages.map(l => l.color),
+      borderWidth:2,
+      pointRadius:8,
+      pointHoverRadius:11,
+    }]
+  },
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{
+      legend:{display:false},
+      tooltip:{
+        callbacks:{
+          label:ctx => `${ctx.raw.name}: ${ctx.raw.y}/10 score, ${ctx.raw.x} lines`
+        }
+      }
+    },
+    scales:{
+      x:{grid:chartGrid,ticks:chartTick,title:{display:true,text:'Total Lines of Code',color:'#64748b',font:{size:11}}},
+      y:{grid:chartGrid,ticks:chartTick,min:5,max:10,title:{display:true,text:'Competency Score',color:'#64748b',font:{size:11}}}
+    }
+  }
+});
+
+// Boilerplate %
+const boilerData = [
+  {lang:'Factor',pct:9},{lang:'C++',pct:12},{lang:'Ruby',pct:9},{lang:'Python',pct:13},
+  {lang:'Julia',pct:13},{lang:'Rust',pct:14},{lang:'TypeScript',pct:17},
+  {lang:'C',pct:24},{lang:'Go',pct:25},{lang:'Zig',pct:29},{lang:'Assembly',pct:32}
+].sort((a,b) => a.pct - b.pct);
+
+new Chart(document.getElementById('chartBoilerplate'), {
+  type:'bar',
+  data:{
+    labels:boilerData.map(d => d.lang),
+    datasets:[{
+      label:'Boilerplate %',
+      data:boilerData.map(d => d.pct),
+      backgroundColor:boilerData.map(d => {
+        const l = languages.find(l => l.name === d.lang);
+        return l ? l.color + '99' : '#666';
+      }),
+      borderColor:boilerData.map(d => {
+        const l = languages.find(l => l.name === d.lang);
+        return l ? l.color : '#666';
+      }),
+      borderWidth:1,
+      borderRadius:6,
+    }]
+  },
+  options:{
+    indexAxis:'y',
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{grid:chartGrid,ticks:chartTick,title:{display:true,text:'% of Total Lines',color:'#64748b',font:{size:11}}},
+      y:{grid:{display:false},ticks:{...chartTick,font:{size:11,weight:'bold'}}}
+    }
+  }
+});
+
+// Radar chart (top 5 languages)
+const radarLangs = ['Python','C++','Rust','Julia','C'];
+const radarMetrics = ['Idioms','Stdlib Usage','Conciseness','Memory Mgmt','Error Handling','Readability'];
+const radarData = {
+  'Python':    [9,   9.5, 8.5, 6, 4, 9],
+  'C++':       [9,   9.5, 9,   9, 3, 8.5],
+  'Rust':      [8.5, 8,   9,  10, 9, 8],
+  'Julia':     [8.5, 8.5, 6.5, 7, 4, 8],
+  'C':         [8,   7,   5.5, 9, 2, 7],
+};
+const radarColors = {'Python':'#3572A5','C++':'#f34b7d','Rust':'#dea584','Julia':'#a270ba','C':'#555'};
+
+new Chart(document.getElementById('chartRadar'), {
+  type:'radar',
+  data:{
+    labels:radarMetrics,
+    datasets:radarLangs.map(name => ({
+      label:name,
+      data:radarData[name],
+      borderColor:radarColors[name],
+      backgroundColor:radarColors[name] + '20',
+      borderWidth:2,
+      pointRadius:3,
+      pointBackgroundColor:radarColors[name],
+    }))
+  },
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{legend:{position:'bottom',labels:{boxWidth:12,padding:16,font:{size:11}}}},
+    scales:{
+      r:{
+        min:0,max:10,
+        ticks:{stepSize:2,color:'#64748b',backdropColor:'transparent',font:{size:10}},
+        grid:{color:'rgba(255,255,255,.08)'},
+        angleLines:{color:'rgba(255,255,255,.08)'},
+        pointLabels:{color:'#94a3b8',font:{size:11,weight:'600'}}
+      }
+    }
+  }
+});
+
+// ---- Copy Code ----
+function copyCode(btn) {
+  const code = btn.closest('.code-block').querySelector('code').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// ---- Scroll Animations ----
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// ---- Nav background on scroll ----
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('nav');
+  nav.style.borderBottomColor = window.scrollY > 50 ? 'var(--border-subtle)' : 'transparent';
+});
+</script>
+
+</body>
+</html>

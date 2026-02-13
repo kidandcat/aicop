@@ -183,6 +183,57 @@ query(v, tl, tr, l, r):
 | solution.rb   | Ruby     | Recursive, $stdin for I/O      |
 | solution.go   | Go       | Recursive, bufio.Scanner       |
 | solution.zig  | Zig      | Recursive, buffered I/O        |
+| solution.c    | C        | Recursive, fast I/O            |
+| solution.S    | x86-64 Assembly | Fixed-size array implementation |
+| solution.jl   | Julia    | Recursive, standard I/O        |
+| solution.factor | Factor | Stack-based concatenative language |
+| solution.ts   | TypeScript | Compiled with `tsc`, recursive |
+| solution.rs   | Rust     | Struct-based `SegTree` with methods |
+| solution.cpp  | C++      | Class-based `SegTree`, `long long` sums |
+
+> **Note:** The Assembly solution uses fixed-size arrays, limiting N to a compile-time maximum, due to the impracticality of dynamic memory management in assembly.
+
+### Build & Run
+
+**TypeScript:**
+```bash
+tsc --target ES2020 --module commonjs --strict solution.ts
+node solution.js < input.txt
+```
+
+**Rust:**
+```bash
+rustc -O -o solution_rs solution.rs
+./solution_rs < input.txt
+```
+
+**C++:**
+```bash
+g++ -std=c++17 -O2 -o solution_cpp solution.cpp
+./solution_cpp < input.txt
+```
+
+**C:**
+```bash
+gcc -O2 -o solution_c solution.c
+./solution_c < input.txt
+```
+
+**x86-64 Assembly (macOS):**
+```bash
+clang -target x86_64-apple-macos11 -nostdlib -static -e start -o solution_asm solution.S
+arch -x86_64 ./solution_asm < input.txt
+```
+
+**Julia:**
+```bash
+julia solution.jl < input.txt
+```
+
+**Factor:**
+```bash
+~/factor/factor -script solution.factor < input.txt
+```
 
 ## Testing
 
