@@ -268,12 +268,13 @@ a:hover{text-decoration:underline}
 .chart-card{
   background:var(--bg-card);border-radius:var(--radius-lg);
   padding:28px;box-shadow:var(--shadow-card);
+  position:relative;overflow:hidden;
 }
 .chart-card h3{
   font-size:1rem;font-weight:700;margin-bottom:20px;
   display:flex;align-items:center;gap:8px;
 }
-.chart-card canvas{width:100%!important}
+.chart-card canvas{display:block;max-height:300px}
 
 /* ---- Language Details ---- */
 .lang-details-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px}
