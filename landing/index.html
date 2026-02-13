@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -259,7 +259,7 @@ a:hover{text-decoration:underline}
   .score-bar-container{min-width:120px}
 }
 
-/* ---- Charts ---- */
+/* ---- Code Cards Grid ---- */
 .charts-grid{
   display:grid;grid-template-columns:repeat(auto-fit,minmax(500px,1fr));
   gap:24px;
@@ -273,7 +273,6 @@ a:hover{text-decoration:underline}
   font-size:1rem;font-weight:700;margin-bottom:20px;
   display:flex;align-items:center;gap:8px;
 }
-.chart-card canvas{width:100%!important}
 
 /* ---- Language Details ---- */
 .lang-details-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px}
@@ -460,7 +459,6 @@ pre code{
     <div class="nav-logo">AICOP</div>
     <div class="nav-links">
       <a href="#ranking">Ranking</a>
-      <a href="#visualizations">Charts</a>
       <a href="#details">Languages</a>
       <a href="#findings">Findings</a>
       <a href="#methodology">Methodology</a>
@@ -581,34 +579,6 @@ pre code{
   </div>
 </section>
 
-<!-- Visualizations -->
-<section class="section bg-alt" id="visualizations">
-  <div class="section-inner">
-    <div class="section-header fade-in">
-      <div class="section-tag">Data Visualizations</div>
-      <h2 class="section-title">Comparative Analysis</h2>
-      <p class="section-desc">Visual breakdown of lines of code, scores, and complexity across all 11 languages.</p>
-    </div>
-    <div class="charts-grid">
-      <div class="chart-card fade-in">
-        <h3>Lines of Code by Problem</h3>
-        <canvas id="chartLOC" height="300"></canvas>
-      </div>
-      <div class="chart-card fade-in">
-        <h3>Score vs Lines of Code</h3>
-        <canvas id="chartScatter" height="300"></canvas>
-      </div>
-      <div class="chart-card fade-in">
-        <h3>Boilerplate Percentage</h3>
-        <canvas id="chartBoilerplate" height="300"></canvas>
-      </div>
-      <div class="chart-card fade-in">
-        <h3>Competency Radar</h3>
-        <canvas id="chartRadar" height="300"></canvas>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- Language Details -->
 <section class="section" id="details">
@@ -868,18 +838,6 @@ const languages = [
   { name:'Assembly',   score:5.5, tier:'Limited',   tierClass:'tier-limited',   lines:1875,ratio:'6.87x', color:'#6E4C13', abbr:'AS', strengths:['Consistent coding style across 5 solutions','Correct callee-saved vs caller-saved registers','Proper stack alignment maintained','Thorough comments documenting arguments'], weaknesses:['Dijkstra downgraded to O(N\u00b2)','No dynamic memory (limits problem sizes)','Copy-pasted utility functions (~80 lines each)','No SIMD instructions or vectorization'] },
 ];
 
-const locByProblem = {
-  labels:['Dijkstra','KMP','LIS','Matrix Exp.','Segment Tree'],
-  datasets:[
-    {label:'Python',     data:[55,92,37,41,79],     borderColor:'#3572A5',backgroundColor:'#3572A530'},
-    {label:'C++',        data:[46,71,31,50,87],      borderColor:'#f34b7d',backgroundColor:'#f34b7d30'},
-    {label:'Rust',       data:[46,68,41,49,85],      borderColor:'#dea584',backgroundColor:'#dea58430'},
-    {label:'TypeScript', data:[73,66,42,43,70],      borderColor:'#3178c6',backgroundColor:'#3178c630'},
-    {label:'Go',         data:[96,115,53,57,119],    borderColor:'#00ADD8',backgroundColor:'#00ADD830'},
-    {label:'C',          data:[181,111,62,72,103],   borderColor:'#555',   backgroundColor:'#55555530'},
-    {label:'Assembly',   data:[373,357,237,354,554], borderColor:'#6E4C13',backgroundColor:'#6E4C1320'},
-  ]
-};
 
 // ---- Render Ranking Table ----
 function renderRanking(sortBy) {
@@ -949,141 +907,6 @@ languages.forEach(lang => {
   detailsContainer.appendChild(card);
 });
 
-// ---- Charts ----
-const chartFont = {family:'Inter, sans-serif'};
-const chartGrid = {color:'rgba(255,255,255,.06)'};
-const chartTick = {color:'#64748b',font:{size:11,family:'Inter'}};
-
-Chart.defaults.color = '#94a3b8';
-Chart.defaults.font.family = 'Inter, sans-serif';
-
-// LOC by Problem (Line chart)
-new Chart(document.getElementById('chartLOC'), {
-  type:'line',
-  data:locByProblem,
-  options:{
-    responsive:true,
-    maintainAspectRatio:false,
-    interaction:{mode:'index',intersect:false},
-    plugins:{legend:{position:'bottom',labels:{boxWidth:12,padding:16,font:{size:11}}}},
-    scales:{
-      x:{grid:chartGrid,ticks:chartTick},
-      y:{grid:chartGrid,ticks:chartTick,title:{display:true,text:'Lines of Code',color:'#64748b',font:{size:11}}}
-    }
-  }
-});
-
-// Scatter: Score vs LOC
-new Chart(document.getElementById('chartScatter'), {
-  type:'scatter',
-  data:{
-    datasets:[{
-      label:'Languages',
-      data: languages.map(l => ({x:l.lines, y:l.score, name:l.name})),
-      backgroundColor: languages.map(l => l.color + 'cc'),
-      borderColor: languages.map(l => l.color),
-      borderWidth:2,
-      pointRadius:8,
-      pointHoverRadius:11,
-    }]
-  },
-  options:{
-    responsive:true,
-    maintainAspectRatio:false,
-    plugins:{
-      legend:{display:false},
-      tooltip:{
-        callbacks:{
-          label:ctx => `${ctx.raw.name}: ${ctx.raw.y}/10 score, ${ctx.raw.x} lines`
-        }
-      }
-    },
-    scales:{
-      x:{grid:chartGrid,ticks:chartTick,title:{display:true,text:'Total Lines of Code',color:'#64748b',font:{size:11}}},
-      y:{grid:chartGrid,ticks:chartTick,min:5,max:10,title:{display:true,text:'Competency Score',color:'#64748b',font:{size:11}}}
-    }
-  }
-});
-
-// Boilerplate %
-const boilerData = [
-  {lang:'Factor',pct:9},{lang:'C++',pct:12},{lang:'Ruby',pct:9},{lang:'Python',pct:13},
-  {lang:'Julia',pct:13},{lang:'Rust',pct:14},{lang:'TypeScript',pct:17},
-  {lang:'C',pct:24},{lang:'Go',pct:25},{lang:'Zig',pct:29},{lang:'Assembly',pct:32}
-].sort((a,b) => a.pct - b.pct);
-
-new Chart(document.getElementById('chartBoilerplate'), {
-  type:'bar',
-  data:{
-    labels:boilerData.map(d => d.lang),
-    datasets:[{
-      label:'Boilerplate %',
-      data:boilerData.map(d => d.pct),
-      backgroundColor:boilerData.map(d => {
-        const l = languages.find(l => l.name === d.lang);
-        return l ? l.color + '99' : '#666';
-      }),
-      borderColor:boilerData.map(d => {
-        const l = languages.find(l => l.name === d.lang);
-        return l ? l.color : '#666';
-      }),
-      borderWidth:1,
-      borderRadius:6,
-    }]
-  },
-  options:{
-    indexAxis:'y',
-    responsive:true,
-    maintainAspectRatio:false,
-    plugins:{legend:{display:false}},
-    scales:{
-      x:{grid:chartGrid,ticks:chartTick,title:{display:true,text:'% of Total Lines',color:'#64748b',font:{size:11}}},
-      y:{grid:{display:false},ticks:{...chartTick,font:{size:11,weight:'bold'}}}
-    }
-  }
-});
-
-// Radar chart (top 5 languages)
-const radarLangs = ['Python','C++','Rust','Julia','C'];
-const radarMetrics = ['Idioms','Stdlib Usage','Conciseness','Memory Mgmt','Error Handling','Readability'];
-const radarData = {
-  'Python':    [9,   9.5, 8.5, 6, 4, 9],
-  'C++':       [9,   9.5, 9,   9, 3, 8.5],
-  'Rust':      [8.5, 8,   9,  10, 9, 8],
-  'Julia':     [8.5, 8.5, 6.5, 7, 4, 8],
-  'C':         [8,   7,   5.5, 9, 2, 7],
-};
-const radarColors = {'Python':'#3572A5','C++':'#f34b7d','Rust':'#dea584','Julia':'#a270ba','C':'#555'};
-
-new Chart(document.getElementById('chartRadar'), {
-  type:'radar',
-  data:{
-    labels:radarMetrics,
-    datasets:radarLangs.map(name => ({
-      label:name,
-      data:radarData[name],
-      borderColor:radarColors[name],
-      backgroundColor:radarColors[name] + '20',
-      borderWidth:2,
-      pointRadius:3,
-      pointBackgroundColor:radarColors[name],
-    }))
-  },
-  options:{
-    responsive:true,
-    maintainAspectRatio:false,
-    plugins:{legend:{position:'bottom',labels:{boxWidth:12,padding:16,font:{size:11}}}},
-    scales:{
-      r:{
-        min:0,max:10,
-        ticks:{stepSize:2,color:'#64748b',backdropColor:'transparent',font:{size:10}},
-        grid:{color:'rgba(255,255,255,.08)'},
-        angleLines:{color:'rgba(255,255,255,.08)'},
-        pointLabels:{color:'#94a3b8',font:{size:11,weight:'600'}}
-      }
-    }
-  }
-});
 
 // ---- Copy Code ----
 function copyCode(btn) {
