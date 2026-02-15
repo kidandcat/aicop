@@ -165,6 +165,7 @@ declare -a RUNNERS=(
     "TypeScript|node $DIR/solution.js"
     "Rust|$DIR/solution_rs"
     "C++|$DIR/solution_cpp"
+    "Dart|dart run $DIR/solution.dart"
 )
 
 echo ""

@@ -256,6 +256,21 @@ else
     echo "Skipping C++ (g++ not found)"
 fi
 
+# --- Dart ---
+if command -v dart &>/dev/null; then
+    echo "${YELLOW}Dart:${NC}"
+    for tc in "${TESTS[@]}"; do
+        input="${tc%% *}"
+        expected="${tc##* }"
+        actual=$(echo "$input" | dart run "$DIR/solution.dart" 2>/dev/null || echo "ERROR")
+        actual=$(echo "$actual" | tr -d '[:space:]')
+        print_result "Dart" "$input" "$expected" "$actual"
+    done
+    echo ""
+else
+    echo "Skipping Dart (dart not found)"
+fi
+
 # --- Summary ---
 echo "========================================"
 printf "Results: ${GREEN}%d passed${NC}, ${RED}%d failed${NC}, %d total\n" "$PASS" "$FAIL" "$TOTAL"

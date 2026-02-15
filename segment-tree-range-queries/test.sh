@@ -270,6 +270,13 @@ if [[ -n "$CPP_BIN" ]]; then
     RUNNER_NAMES+=("C++")
 fi
 
+if command -v dart &>/dev/null; then
+    RUNNERS+=("dart run solution.dart")
+    RUNNER_NAMES+=("Dart")
+else
+    echo -e "${YELLOW}Dart not found, skipping${NC}"
+fi
+
 if [[ ${#RUNNERS[@]} -eq 0 ]]; then
     echo -e "${RED}No solutions available to test!${NC}"
     exit 1

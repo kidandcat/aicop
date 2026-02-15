@@ -1,12 +1,12 @@
 # AICOP — AI Coding Capabilities
 
-> How well does AI write code? A comparative analysis of Claude's competitive programming solutions across **11 languages** and **5 algorithmic challenges**.
+> How well does AI write code? A comparative analysis of Claude's competitive programming solutions across **12 languages** and **5 algorithmic challenges**.
 
 **[View the full interactive report](https://kidandcat.github.io/aicop/)**
 
 ## Overview
 
-55 solutions. 6,400+ lines of code. From Python to x86-64 Assembly.
+60 solutions. 6,800+ lines of code. From Python to x86-64 Assembly.
 
 This project evaluates Claude's ability to write complex, optimized programs across the full spectrum of programming languages — measuring idioms, performance, memory management, and code quality.
 
@@ -16,7 +16,7 @@ This project evaluates Claude's ability to write complex, optimized programs acr
 |------|-----------|-------|
 | S — Expert | Python, C++ | 9/10 |
 | A — Strong | Rust, Julia, C | 8–8.5/10 |
-| B — Competent | Go, Factor | 7–7.5/10 |
+| B — Competent | Go, Dart, Factor | 7–7.5/10 |
 | C — Adequate | TypeScript, Zig, Ruby | 6–6.5/10 |
 | D — Limited | Assembly x86-64 | 5.5/10 |
 
@@ -33,7 +33,7 @@ This project evaluates Claude's ability to write complex, optimized programs acr
 ## Key Findings
 
 - **C++ shatters the verbosity myth** — second most concise language at just 285 total lines
-- **Translation bias persists** — all 55 implementations share identical algorithmic structure and variable names
+- **Translation bias persists** — all 60 implementations share identical algorithmic structure and variable names
 - **Rust delivers** — zero-cost abstractions, memory safety, 289 lines
 - **TypeScript disappoints** — the type system is its defining feature, yet solutions read like JavaScript with annotations
 - **Assembly at scale** — 555 lines for a Segment Tree in raw x86-64, but Dijkstra was downgraded to O(N²)
@@ -47,6 +47,7 @@ Pure GC ──── GC + tuning ──── Ownership ──── RAII ──
 Python       Go               Rust           C++       Zig                 C                Assembly
 Ruby         Julia
 TypeScript
+Dart
 Factor
 ```
 
@@ -54,8 +55,8 @@ Factor
 
 ```
 aicop/
-├── dijkstra-shortest-path/     # 11 solutions + tests
-├── kmp-string-matching/        # 11 solutions + tests
+├── dijkstra-shortest-path/     # 12 solutions + tests
+├── kmp-string-matching/        # 12 solutions + tests
 ├── longest-increasing-subsequence/
 ├── matrix-exponentiation/
 ├── segment-tree-range-queries/

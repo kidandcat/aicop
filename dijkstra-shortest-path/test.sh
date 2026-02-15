@@ -219,6 +219,15 @@ fi
 SOLUTION_CMDS+=("./solution_cpp")
 SOLUTION_READY+=("$CPP_READY")
 
+# Dart
+SOLUTION_NAMES+=("Dart")
+SOLUTION_CMDS+=("dart run solution.dart")
+if command -v dart &>/dev/null; then
+    SOLUTION_READY+=(1)
+else
+    SOLUTION_READY+=(0)
+fi
+
 # --- Run tests ---
 
 echo -e "${BOLD}Dijkstra's Shortest Path — Test Suite${NC}"

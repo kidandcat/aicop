@@ -1,6 +1,6 @@
 # Comparative Analysis: AI-Generated Competitive Programming Solutions
 
-Analysis of Claude's implementations across 5 classic competitive programming problems in 11 languages: Ruby, Python, Go, Zig, C, Assembly x86-64, Julia, Factor, TypeScript, Rust, and C++.
+Analysis of Claude's implementations across 5 classic competitive programming problems in 12 languages: Ruby, Python, Go, Dart, Zig, C, Assembly x86-64, Julia, Factor, TypeScript, Rust, and C++.
 
 ---
 
@@ -65,6 +65,23 @@ Go implementations follow conventions well:
 c[0][0] = (a[0][0]%MOD*b[0][0]%MOD + a[0][1]%MOD*b[1][0]%MOD) % MOD
 ```
 Each value is already `< MOD` after previous operations, so intermediate `%MOD` on inputs is redundant.
+
+### Dart — Clean OOP with stdlib gaps (7.5/10)
+
+Dart implementations use idiomatic class-based design and proper typed collections:
+
+- **Class-based abstractions** (`Edge`, `Item`, `MinHeap`) — clean OOP that feels natural in Dart
+- **`final`/`var`** used correctly for immutable vs mutable bindings throughout
+- **`typedef Matrix = List<int>`** — concise type alias for the flat 2x2 matrix representation
+- **`StringBuffer`** for output buffering in Segment Tree — correct Dart I/O optimization
+- **`~/` integer division operator** — properly used instead of `toInt()` conversions
+- **Cascade operator** (`..push()`) used in Dijkstra heap initialization
+
+**Gap: No stdlib priority queue.** Dart's standard library (`dart:collection`) lacks a `PriorityQueue`, requiring a full custom `MinHeap` implementation (~50 lines). This accounts for much of the verbosity in the Dijkstra solution.
+
+**Gap: No stdlib sorted search.** Unlike Python (`bisect_left`), Go (`sort.SearchInts`), or Julia (`searchsortedfirst`), Dart requires a manual `lowerBound` implementation for LIS.
+
+**I/O pattern:** Uses `stdin.readLineSync()` in a loop to read all input, then tokenizes. This is the standard competitive programming pattern in Dart, but more verbose than Python's `sys.stdin.buffer.read()` or Go's `bufio.Reader`.
 
 ### Zig — Correct but sometimes fighting the language (6.5/10)
 
@@ -1512,7 +1529,7 @@ Factor solutions consistently use individual `print` calls without buffering:
 ```factor
 seg-query number>string print
 ```
-This generates one `write()` syscall per query result. For Segment Tree with up to 200,000 queries, this is the worst I/O strategy across all 11 languages.
+This generates one `write()` syscall per query result. For Segment Tree with up to 200,000 queries, this is the worst I/O strategy across all 12 languages.
 
 ---
 
@@ -1520,9 +1537,9 @@ This generates one `write()` syscall per query result. For Segment Tree with up 
 
 ### Overall Quality: High with Language-Specific Gaps
 
-The implementations are **algorithmically correct** across all 55 files (5 problems × 11 languages) and use the **right asymptotic complexity** for each problem (with the notable exception of Assembly's Dijkstra at O(N²)).
+The implementations are **algorithmically correct** across all 60 files (5 problems × 12 languages) and use the **right asymptotic complexity** for each problem (with the notable exception of Assembly's Dijkstra at O(N²)).
 
-### Language Competency Ranking (Final — 11 Languages)
+### Language Competency Ranking (Final — 12 Languages)
 
 | Rank | Language | Score | Rationale |
 |------|----------|-------|-----------|
@@ -1532,20 +1549,21 @@ The implementations are **algorithmically correct** across all 55 files (5 probl
 | 4 | **Julia** | **8.5/10** | Multiple dispatch, `@inbounds`, value-type `Mat2`, `Int128` widening, `IOBuffer`, `searchsortedfirst`. Best documentation. Minor deduction for verbose manual heap. |
 | 5 | **C** | **8/10** | Clean, textbook implementations with complete memory management. Every `malloc` has its `free`. Minor deduction for excessive `%MOD` and unchecked `scanf`. |
 | 6 | **Go** | **7.5/10** | Solid, idiomatic Go. Correct `container/heap` usage. Deductions for excessive modular arithmetic, unbuffered I/O inconsistency, and universal error suppression. |
-| 7 | **Factor** | **7/10** | Most concise language. Good use of `<min-heap>` vocabulary. But overreliance on `::` locals, no combinators, no tuples, no output buffering. Surface-level knowledge of the paradigm. |
-| 8 | **TypeScript** | **6.5/10** | Correct but underutilizes the type system. BigInt for Matrix Exp. is clever. But: no interfaces, no generics, no classes, no `readonly`, manual heap. Reads like JavaScript-with-annotations, not TypeScript. |
-| 9 | **Zig** | **6.5/10** | Demonstrates genuine Zig knowledge but inconsistent: varying allocators, missed stdlib opportunities, mixed error handling. The custom `readInt` shows ambition but overall feels like a translation. |
-| 10 | **Ruby** | **6/10** | Functional and correct but the least idiomatic high-level language. Solutions are Python transliterations. Misses Ruby's unique strengths (mixins, Enumerable, blocks, Struct). |
-| 11 | **Assembly** | **5.5/10** | Impressive scope — implementing segment trees in raw x86-64 is non-trivial. Good register discipline and calling conventions. But: O(N²) Dijkstra downgrade, no dynamic memory, copy-pasted utilities, no SIMD. Competent but not expert-level systems programming. |
+| 7 | **Dart** | **7.5/10** | Clean class-based OOP with proper typed collections. `typedef`, `final`/`var`, `~/` integer division, `StringBuffer` buffering. Deductions for missing stdlib priority queue and sorted search, requiring custom implementations. |
+| 8 | **Factor** | **7/10** | Most concise language. Good use of `<min-heap>` vocabulary. But overreliance on `::` locals, no combinators, no tuples, no output buffering. Surface-level knowledge of the paradigm. |
+| 9 | **TypeScript** | **6.5/10** | Correct but underutilizes the type system. BigInt for Matrix Exp. is clever. But: no interfaces, no generics, no classes, no `readonly`, manual heap. Reads like JavaScript-with-annotations, not TypeScript. |
+| 10 | **Zig** | **6.5/10** | Demonstrates genuine Zig knowledge but inconsistent: varying allocators, missed stdlib opportunities, mixed error handling. The custom `readInt` shows ambition but overall feels like a translation. |
+| 11 | **Ruby** | **6/10** | Functional and correct but the least idiomatic high-level language. Solutions are Python transliterations. Misses Ruby's unique strengths (mixins, Enumerable, blocks, Struct). |
+| 12 | **Assembly** | **5.5/10** | Impressive scope — implementing segment trees in raw x86-64 is non-trivial. Good register discipline and calling conventions. But: O(N²) Dijkstra downgrade, no dynamic memory, copy-pasted utilities, no SIMD. Competent but not expert-level systems programming. |
 
 ### Key Takeaways
 
-- **Translation bias persists**: All 11 implementations share identical algorithmic structure, confirming they were generated from a single mental model and translated per-language. Variable names (`dist`, `adj`, `heap`, `tails`, `lps`) are identical across all languages.
+- **Translation bias persists**: All 12 implementations share identical algorithmic structure, confirming they were generated from a single mental model and translated per-language. Variable names (`dist`, `adj`, `heap`, `tails`, `lps`) are identical across all languages.
 
 - **New language tier list**:
   - **Tier 1 (Expert)**: Python, C++
   - **Tier 2 (Strong)**: Rust, Julia, C
-  - **Tier 3 (Competent)**: Go, Factor
+  - **Tier 3 (Competent)**: Go, Dart, Factor
   - **Tier 4 (Adequate)**: TypeScript, Zig, Ruby
   - **Tier 5 (Impressive but limited)**: Assembly
 
@@ -1555,8 +1573,8 @@ The implementations are **algorithmically correct** across all 55 files (5 probl
 
 - **TypeScript is the biggest disappointment** — the type system is the language's defining feature, yet these solutions use it at a JavaScript+annotations level. No interfaces, no generics, no classes for data structures.
 
-- **Memory management spectrum**: The 11 languages now span every possible model:
-  - **No management**: Python, Ruby, Factor, TypeScript (pure GC)
+- **Memory management spectrum**: The 12 languages now span every possible model:
+  - **No management**: Python, Ruby, Factor, TypeScript, Dart (pure GC)
   - **GC with tuning**: Go, Julia
   - **Compile-time ownership**: Rust
   - **RAII/scope-based**: C++
@@ -1564,7 +1582,7 @@ The implementations are **algorithmically correct** across all 55 files (5 probl
   - **Full manual**: C
   - **Static only**: Assembly
 
-- **Best single file**: `longest-increasing-subsequence/solution.cpp` — 31 lines, `lower_bound` with iterators, `sync_with_stdio(false)`, range-based for. The most elegant expression of the LIS algorithm across all 55 files.
+- **Best single file**: `longest-increasing-subsequence/solution.cpp` — 31 lines, `lower_bound` with iterators, `sync_with_stdio(false)`, range-based for. The most elegant expression of the LIS algorithm across all 60 files.
 
 - **Most impressive file**: `segment-tree-range-queries/solution.cpp` — 87 lines, class with private/public, const-correctness, method overloading, RAII memory management. Textbook OOP.
 
@@ -1574,7 +1592,7 @@ The implementations are **algorithmically correct** across all 55 files (5 probl
 
 ### Cross-Language Antipatterns
 
-1. **Copy-paste comments**: Comments are nearly identical across all 11 languages for the same problem. Language-specific comments would be more helpful.
+1. **Copy-paste comments**: Comments are nearly identical across all 12 languages for the same problem. Language-specific comments would be more helpful.
 
 2. **Identical variable naming**: `dist`, `adj`, `heap`, `tails`, `lps` — same names everywhere, confirming translation rather than independent design.
 

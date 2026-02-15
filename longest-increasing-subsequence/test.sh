@@ -255,6 +255,12 @@ else
     printf "${RED}Skipping C++ (compilation failed or g++ not found)${NC}\n\n"
 fi
 
+if command -v dart &>/dev/null; then
+    run_tests "Dart" "dart run '$DIR/solution.dart'"
+else
+    printf "${RED}Skipping Dart (dart not found)${NC}\n\n"
+fi
+
 # --------------------------------------------------------------------------
 # Summary
 # --------------------------------------------------------------------------
