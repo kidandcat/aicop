@@ -27,6 +27,15 @@ zig-out/
 .dart_tool/
 .packages
 
+# Ada / Alire
+alire/
+obj/
+bin/
+config/
+*.db
+*.db-shm
+*.db-wal
+
 # Editor files
 .vscode/
 .idea/

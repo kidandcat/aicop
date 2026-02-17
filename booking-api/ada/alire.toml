@@ -1,0 +1,11 @@
+name = "booking_api"
+description = "Booking API REST server in Ada"
+version = "0.1.0-dev"
+authors = ["Jairo"]
+
+[build-switches]
+"*".optimization = ["-O2"]
+
+[[depends-on]]
+aws = ">=25.0.0"
+ada_sqlite3 = ">=0.1.0"
