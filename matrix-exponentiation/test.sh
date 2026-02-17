@@ -271,6 +271,27 @@ else
     echo "Skipping Dart (dart not found)"
 fi
 
+# --- Ada ---
+if command -v gnatmake &>/dev/null; then
+    echo "${YELLOW}Ada:${NC}"
+    ADA_BIN="$DIR/solution_ada"
+    if gnatmake -O2 -o "$ADA_BIN" "$DIR/solution.adb" 2>/dev/null; then
+        for tc in "${TESTS[@]}"; do
+            input="${tc%% *}"
+            expected="${tc##* }"
+            actual=$(echo "$input" | "$ADA_BIN" 2>/dev/null || echo "ERROR")
+            actual=$(echo "$actual" | tr -d '[:space:]')
+            print_result "Ada" "$input" "$expected" "$actual"
+        done
+        rm -f "$ADA_BIN" "$DIR/solution.ali" "$DIR/solution.o"
+    else
+        echo "  Failed to compile Ada solution"
+    fi
+    echo ""
+else
+    echo "Skipping Ada (gnatmake not found)"
+fi
+
 # --- Summary ---
 echo "========================================"
 printf "Results: ${GREEN}%d passed${NC}, ${RED}%d failed${NC}, %d total\n" "$PASS" "$FAIL" "$TOTAL"

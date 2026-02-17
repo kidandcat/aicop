@@ -100,6 +100,7 @@ All arithmetic is performed modulo 10^9 + 7 to prevent overflow and produce the 
 - [solution.ts](solution.ts) - TypeScript (BigInt for N up to 10^18)
 - [solution.rs](solution.rs) - Rust
 - [solution.cpp](solution.cpp) - C++ (array-based 2x2 matrix)
+- [solution.adb](solution.adb) - Ada (2x2 matrix type, binary exponentiation)
 
 ### Build & Run
 
@@ -141,6 +142,12 @@ julia solution.jl < input.txt
 **Factor:**
 ```bash
 ~/factor/factor -script solution.factor < input.txt
+```
+
+**Ada:**
+```bash
+gnatmake -O2 -o solution_ada solution.adb
+./solution_ada < input.txt
 ```
 
 ## Testing

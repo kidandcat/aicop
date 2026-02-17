@@ -228,6 +228,17 @@ else
     SOLUTION_READY+=(0)
 fi
 
+# Ada (pre-compile with gnatmake, then run binary)
+SOLUTION_NAMES+=("Ada")
+ADA_READY=0
+if command -v gnatmake &>/dev/null; then
+    if gnatmake -O2 -o solution_ada solution.adb 2>/dev/null; then
+        ADA_READY=1
+    fi
+fi
+SOLUTION_CMDS+=("./solution_ada")
+SOLUTION_READY+=("$ADA_READY")
+
 # --- Run tests ---
 
 echo -e "${BOLD}Dijkstra's Shortest Path — Test Suite${NC}"
@@ -275,7 +286,7 @@ for ((s = 0; s < NUM_SOLUTIONS; s++)); do
 done
 
 # Clean up build artifacts
-rm -f "$DIR/solution" "$DIR/solution.o" "$DIR/solution_c" "$DIR/solution_asm" "$DIR/solution.js" "$DIR/solution_rs" "$DIR/solution_cpp"
+rm -f "$DIR/solution" "$DIR/solution.o" "$DIR/solution_c" "$DIR/solution_asm" "$DIR/solution.js" "$DIR/solution_rs" "$DIR/solution_cpp" "$DIR/solution_ada" "$DIR/solution.ali"
 
 # --- Summary ---
 

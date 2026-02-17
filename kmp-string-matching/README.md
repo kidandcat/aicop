@@ -177,6 +177,7 @@ The naive approach (check every starting position) is O(N * M) in the worst case
 | solution.ts   | TypeScript | Compiled with `tsc`                      |
 | solution.rs   | Rust     | Byte-level matching with `BufWriter`       |
 | solution.cpp  | C++      | `getline` input, STL `vector`              |
+| solution.adb  | Ada      | `Ada.Strings.Unbounded`, `Ada.Containers.Vectors` |
 
 ### Build & Run
 
@@ -218,6 +219,12 @@ julia solution.jl < input.txt
 **Factor:**
 ```bash
 ~/factor/factor -script solution.factor < input.txt
+```
+
+**Ada:**
+```bash
+gnatmake -O2 -o solution_ada solution.adb
+./solution_ada < input.txt
 ```
 
 ## Testing

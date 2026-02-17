@@ -262,6 +262,25 @@ else
 fi
 
 # --------------------------------------------------------------------------
+# Compile Ada
+# --------------------------------------------------------------------------
+if command -v gnatmake &>/dev/null; then
+    printf "${YELLOW}Compiling Ada...${NC}\n"
+    if gnatmake -O2 -o "$DIR/solution_ada" "$DIR/solution.adb" 2>/dev/null; then
+        echo "  Done."
+    else
+        echo "  Warning: Ada compilation may have failed."
+    fi
+    echo
+fi
+
+if [[ -f "$DIR/solution_ada" ]]; then
+    run_tests "Ada" "'$DIR/solution_ada'"
+else
+    printf "${RED}Skipping Ada (compilation failed or gnatmake not found)${NC}\n\n"
+fi
+
+# --------------------------------------------------------------------------
 # Summary
 # --------------------------------------------------------------------------
 echo "==============================="
@@ -269,7 +288,7 @@ printf "Total: %d  |  ${GREEN}Pass: %d${NC}  |  ${RED}Fail: %d${NC}\n" "$TOTAL" 
 echo "==============================="
 
 # Cleanup compiled binaries
-rm -f "$DIR/solution_go" "$DIR/solution_zig" "$DIR/solution_zig.o" "$DIR/solution_c" "$DIR/solution_asm" "$DIR/solution.js" "$DIR/solution_rs" "$DIR/solution_cpp"
+rm -f "$DIR/solution_go" "$DIR/solution_zig" "$DIR/solution_zig.o" "$DIR/solution_c" "$DIR/solution_asm" "$DIR/solution.js" "$DIR/solution_rs" "$DIR/solution_cpp" "$DIR/solution_ada" "$DIR/solution.ali"
 
 if [[ $FAIL -gt 0 ]]; then
     exit 1

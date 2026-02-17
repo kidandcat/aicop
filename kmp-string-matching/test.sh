@@ -119,6 +119,10 @@ if command -v g++ &>/dev/null; then
     echo -e "${YELLOW}Compiling C++ solution...${NC}"
     g++ -std=c++17 -O2 -o solution_cpp solution.cpp 2>&1 || echo "C++ compilation failed"
 fi
+if command -v gnatmake &>/dev/null; then
+    echo -e "${YELLOW}Compiling Ada solution...${NC}"
+    gnatmake -O2 -o solution_ada solution.adb 2>&1 || echo "Ada compilation failed"
+fi
 
 run_test() {
     local runner_name="$1"
@@ -166,6 +170,7 @@ declare -a RUNNERS=(
     "Rust|$DIR/solution_rs"
     "C++|$DIR/solution_cpp"
     "Dart|dart run $DIR/solution.dart"
+    "Ada|$DIR/solution_ada"
 )
 
 echo ""
@@ -189,7 +194,7 @@ for (( t = 0; t < NUM_TESTS; t++ )); do
 done
 
 # Cleanup compiled binaries
-rm -f "$DIR/solution_go" "$DIR/solution_zig" "$DIR/solution_zig.o" "$DIR/solution_c" "$DIR/solution_asm" "$DIR/solution.js" "$DIR/solution_rs" "$DIR/solution_cpp"
+rm -f "$DIR/solution_go" "$DIR/solution_zig" "$DIR/solution_zig.o" "$DIR/solution_c" "$DIR/solution_asm" "$DIR/solution.js" "$DIR/solution_rs" "$DIR/solution_cpp" "$DIR/solution_ada" "$DIR/solution.ali"
 
 echo ""
 echo "======================================"

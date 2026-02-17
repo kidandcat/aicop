@@ -197,6 +197,19 @@ else
     echo -e "${YELLOW}g++ not found, skipping C++${NC}"
 fi
 
+ADA_BIN=""
+if command -v gnatmake &>/dev/null; then
+    echo "Compiling Ada..."
+    if gnatmake -O2 -o solution_ada solution.adb 2>/dev/null; then
+        ADA_BIN="./solution_ada"
+        echo -e "${GREEN}Ada compiled successfully${NC}"
+    else
+        echo -e "${RED}Ada compilation failed${NC}"
+    fi
+else
+    echo -e "${YELLOW}gnatmake not found, skipping Ada${NC}"
+fi
+
 echo ""
 
 # ---- Define runners ----
@@ -277,6 +290,11 @@ else
     echo -e "${YELLOW}Dart not found, skipping${NC}"
 fi
 
+if [[ -n "$ADA_BIN" ]]; then
+    RUNNERS+=("$ADA_BIN")
+    RUNNER_NAMES+=("Ada")
+fi
+
 if [[ ${#RUNNERS[@]} -eq 0 ]]; then
     echo -e "${RED}No solutions available to test!${NC}"
     exit 1
@@ -320,7 +338,7 @@ for runner_idx in "${!RUNNERS[@]}"; do
 done
 
 # ---- Cleanup ----
-rm -f solution_go solution_zig solution_c solution_asm solution.js solution_rs solution_cpp
+rm -f solution_go solution_zig solution_c solution_asm solution.js solution_rs solution_cpp solution_ada solution.ali solution.o
 
 # ---- Summary ----
 TOTAL=$((PASS + FAIL + SKIP))

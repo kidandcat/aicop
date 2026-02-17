@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AICOP - AI Coding Capabilities Report</title>
-<meta name="description" content="Comparative analysis of AI-generated competitive programming solutions across 12 languages. How well does Claude write code in Python, C++, Rust, Assembly and more?">
+<meta name="description" content="Comparative analysis of AI-generated competitive programming solutions across 13 languages. How well does Claude write code in Python, C++, Rust, Ada, Assembly and more?">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -477,11 +477,11 @@ pre code{
   </div>
   <h1>How Well Does AI<br><span class="gradient">Write Code?</span></h1>
   <p class="hero-subtitle">
-    A comprehensive analysis of Claude's competitive programming solutions across 12 languages &mdash; from Python to x86-64 Assembly. Measuring idioms, performance, memory management, and code quality.
+    A comprehensive analysis of Claude's competitive programming solutions across 13 languages &mdash; from Python to x86-64 Assembly. Measuring idioms, performance, memory management, and code quality.
   </p>
   <div class="hero-stats">
     <div class="hero-stat">
-      <div class="hero-stat-value">12</div>
+      <div class="hero-stat-value">13</div>
       <div class="hero-stat-label">Languages</div>
     </div>
     <div class="hero-stat">
@@ -489,11 +489,11 @@ pre code{
       <div class="hero-stat-label">Problems</div>
     </div>
     <div class="hero-stat">
-      <div class="hero-stat-value">60</div>
+      <div class="hero-stat-value">65</div>
       <div class="hero-stat-label">Solutions</div>
     </div>
     <div class="hero-stat">
-      <div class="hero-stat-value">6.8K</div>
+      <div class="hero-stat-value">7.4K</div>
       <div class="hero-stat-label">Lines of Code</div>
     </div>
   </div>
@@ -508,7 +508,7 @@ pre code{
     <div class="section-header fade-in">
       <div class="section-tag">Language Ranking</div>
       <h2 class="section-title">Competency Scores</h2>
-      <p class="section-desc">Languages ranked by how idiomatically and correctly Claude uses each one for competitive programming. 12 languages evaluated.</p>
+      <p class="section-desc">Languages ranked by how idiomatically and correctly Claude uses each one for competitive programming. 13 languages evaluated.</p>
     </div>
     <div class="ranking-controls fade-in">
       <button class="active" data-sort="score">By Score</button>
@@ -562,6 +562,7 @@ pre code{
         <div class="tier-items">
           <div class="tier-item">Go</div>
           <div class="tier-item">Dart</div>
+          <div class="tier-item">Ada</div>
           <div class="tier-item">Factor</div>
         </div>
       </div>
@@ -741,7 +742,7 @@ cout << tails.<span class="fn">size</span>() << <span class="str">"\n"</span>;</
       <div class="finding-card violet fade-in">
         <div class="finding-icon">&#128270;</div>
         <h3>Translation Bias Persists</h3>
-        <p>All 60 implementations share identical algorithmic structure and variable names (<code>dist</code>, <code>adj</code>, <code>heap</code>, <code>tails</code>), confirming they were generated from a single mental model.</p>
+        <p>All 65 implementations share identical algorithmic structure and variable names (<code>dist</code>, <code>adj</code>, <code>heap</code>, <code>tails</code>), confirming they were generated from a single mental model.</p>
       </div>
       <div class="finding-card emerald fade-in">
         <div class="finding-icon">&#128640;</div>
@@ -761,7 +762,7 @@ cout << tails.<span class="fn">size</span>() << <span class="str">"\n"</span>;</
       <div class="finding-card cyan fade-in">
         <div class="finding-icon">&#128202;</div>
         <h3>Memory Model Spectrum</h3>
-        <p>The 12 languages span every memory model: pure GC (Python, Ruby, TS, Dart, Factor), GC with tuning (Go, Julia), ownership (Rust), RAII (C++), manual with defer (Zig), full manual (C), static only (Assembly).</p>
+        <p>The 13 languages span every memory model: pure GC (Python, Ruby, TS, Dart, Factor), GC with tuning (Go, Julia), ownership (Rust), RAII (C++, Ada), manual with defer (Zig), full manual (C), static only (Assembly).</p>
       </div>
     </div>
   </div>
@@ -779,7 +780,7 @@ cout << tails.<span class="fn">size</span>() << <span class="str">"\n"</span>;</
       <div class="spectrum-row"><div class="spectrum-dot" style="background:var(--accent-emerald)"></div><div class="spectrum-label">Pure GC</div><div class="spectrum-langs">Python, Ruby, TypeScript, Dart, Factor</div></div>
       <div class="spectrum-row"><div class="spectrum-dot" style="background:var(--accent-cyan)"></div><div class="spectrum-label">GC with awareness</div><div class="spectrum-langs">Go, Julia</div></div>
       <div class="spectrum-row"><div class="spectrum-dot" style="background:var(--accent-blue)"></div><div class="spectrum-label">Ownership (compile-time)</div><div class="spectrum-langs">Rust</div></div>
-      <div class="spectrum-row"><div class="spectrum-dot" style="background:var(--accent-violet)"></div><div class="spectrum-label">RAII (scope-based)</div><div class="spectrum-langs">C++</div></div>
+      <div class="spectrum-row"><div class="spectrum-dot" style="background:var(--accent-violet)"></div><div class="spectrum-label">RAII (scope-based)</div><div class="spectrum-langs">C++, Ada</div></div>
       <div class="spectrum-row"><div class="spectrum-dot" style="background:var(--accent-amber)"></div><div class="spectrum-label">Manual with defer</div><div class="spectrum-langs">Zig</div></div>
       <div class="spectrum-row"><div class="spectrum-dot" style="background:var(--accent-orange)"></div><div class="spectrum-label">Full manual</div><div class="spectrum-langs">C</div></div>
       <div class="spectrum-row"><div class="spectrum-dot" style="background:var(--accent-rose)"></div><div class="spectrum-label">Static BSS only</div><div class="spectrum-langs">Assembly x86-64</div></div>
@@ -804,7 +805,7 @@ cout << tails.<span class="fn">size</span>() << <span class="str">"\n"</span>;</
       <div class="method-step">
         <div class="method-step-num">02</div>
         <h3>Language Coverage</h3>
-        <p>12 languages spanning the full abstraction spectrum: Python, Ruby, Go, Dart, Zig, C, Assembly x86-64, Julia, Factor, TypeScript, Rust, and C++.</p>
+        <p>13 languages spanning the full abstraction spectrum: Python, Ruby, Go, Dart, Ada, Zig, C, Assembly x86-64, Julia, Factor, TypeScript, Rust, and C++.</p>
       </div>
       <div class="method-step">
         <div class="method-step-num">03</div>
@@ -864,6 +865,7 @@ const languages = [
   { name:'C',          score:8,   tier:'Strong',    tierClass:'tier-strong',    lines:529, ratio:'1.94x', color:'#555555', abbr:'C',  strengths:['Clean struct-based abstractions','Complete memory lifecycle (every malloc has free)','getline() for robust string reading','Output buffering with sprintf'], weaknesses:['Excessive %MOD in matrix multiplication','No scanf return value checking'] },
   { name:'Go',         score:7.5, tier:'Competent', tierClass:'tier-competent', lines:440, ratio:'1.61x', color:'#00ADD8', abbr:'GO', strengths:['Correct container/heap interface usage','Proper bufio buffering for I/O','sort.SearchInts used appropriately','Clean struct types for domain concepts'], weaknesses:['Excessive %MOD in Matrix Exponentiation','Unbuffered fmt.Scan (inconsistent)','Error values universally ignored'] },
   { name:'Dart',       score:7.5, tier:'Competent', tierClass:'tier-competent', lines:420, ratio:'1.54x', color:'#0175C2', abbr:'DA', strengths:['Clean class-based abstractions (Edge, Item, MinHeap)','Idiomatic final/var, typed collections, cascade operator','typedef Matrix = List<int> is concise','StringBuffer for output buffering','Proper ~/\u00a0integer division operator'], weaknesses:['No stdlib priority queue (requires custom MinHeap)','No stdlib sorted search (manual lowerBound)','readLineSync() loop for bulk input is verbose','Empty token filtering needed in split()'] },
+  { name:'Ada',        score:7,   tier:'Competent', tierClass:'tier-competent', lines:566, ratio:'2.07x', color:'#02a1c2', abbr:'AD', strengths:['Custom types for domain modeling (Edge, HeapNode, Matrix_2x2)','Long_Long_Integer for 64-bit values throughout','Ada.Containers.Vectors for dynamic adjacency lists','Declare blocks for stack allocation after reading N','Width => 0 on Put calls for clean integer output'], weaknesses:['No stdlib priority queue (custom heap with access types)','Verbose I/O requiring separate with/use clauses','Boilerplate for generic package instantiation'] },
   { name:'Factor',     score:7,   tier:'Competent', tierClass:'tier-competent', lines:273, ratio:'1.00x', color:'#636746', abbr:'FA', strengths:['Most concise language by line count','<min-heap> vocabulary in Dijkstra','Good use of :> local bindings for readability'], weaknesses:['Overreliance on :: locals','No use of Factor object system (TUPLE:)','No output buffering (slowest I/O)','Missing bi, tri, bi@ combinators'] },
   { name:'TypeScript', score:6.5, tier:'Adequate',  tierClass:'tier-adequate',  lines:294, ratio:'1.08x', color:'#3178c6', abbr:'TS', strengths:['BigInt for Matrix Exponentiation (cleanest overflow fix)','Consistent I/O pattern across all files','Output buffering with string[] join','Creative flat tuple Matrix type'], weaknesses:['No interfaces &mdash; everything is [number, number] tuples','No generics &mdash; heap is hardcoded','No readonly, as const, or immutable patterns','No class-based data structures','Reads like JavaScript with type annotations'] },
   { name:'Zig',        score:6.5, tier:'Adequate',  tierClass:'tier-adequate',  lines:523, ratio:'1.92x', color:'#ec915c', abbr:'ZG', strengths:['Correct use of std.PriorityQueue','u128 cast for overflow prevention','Proper defer cleanup pattern','Custom streaming I/O shows advanced knowledge'], weaknesses:['Inconsistent allocator choice across problems','Manual lowerBound (std.sort.lowerBound exists)','Mixed error handling: try vs catch return','Static MAX_N wastes memory'] },
@@ -881,6 +883,7 @@ const locByProblem = {
     {label:'Go',         data:[96,115,53,57,119],    borderColor:'#00ADD8',backgroundColor:'#00ADD830'},
     {label:'C',          data:[181,111,62,72,103],   borderColor:'#555',   backgroundColor:'#55555530'},
     {label:'Dart',       data:[122,92,55,55,96],      borderColor:'#0175C2',backgroundColor:'#0175C230'},
+    {label:'Ada',        data:[190,121,83,71,101],   borderColor:'#02a1c2',backgroundColor:'#02a1c230'},
     {label:'Assembly',   data:[373,357,237,354,554], borderColor:'#6E4C13',backgroundColor:'#6E4C1320'},
   ]
 };
@@ -1012,7 +1015,7 @@ new Chart(document.getElementById('chartScatter'), {
 // Boilerplate %
 const boilerData = [
   {lang:'Factor',pct:9},{lang:'C++',pct:12},{lang:'Ruby',pct:9},{lang:'Python',pct:13},
-  {lang:'Julia',pct:13},{lang:'Rust',pct:14},{lang:'TypeScript',pct:17},{lang:'Dart',pct:20},
+  {lang:'Julia',pct:13},{lang:'Rust',pct:14},{lang:'TypeScript',pct:17},{lang:'Ada',pct:18},{lang:'Dart',pct:20},
   {lang:'C',pct:24},{lang:'Go',pct:25},{lang:'Zig',pct:29},{lang:'Assembly',pct:32}
 ].sort((a,b) => a.pct - b.pct);
 

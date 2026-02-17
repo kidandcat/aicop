@@ -154,6 +154,7 @@ After processing all elements, the answer is `len(tails)`.
 | TypeScript | `solution.ts` | Custom `lowerBound`, compiled with `tsc` |
 | Rust | `solution.rs` | Manual binary search, idiomatic iterators |
 | C++ | `solution.cpp` | Uses `std::lower_bound` from `<algorithm>` |
+| Ada | `solution.adb` | Manual binary search, stack-allocated arrays |
 
 ### Build & Run
 
@@ -195,6 +196,12 @@ julia solution.jl < input.txt
 **Factor:**
 ```bash
 ~/factor/factor -script solution.factor < input.txt
+```
+
+**Ada:**
+```bash
+gnatmake -O2 -o solution_ada solution.adb
+./solution_ada < input.txt
 ```
 
 ## Testing

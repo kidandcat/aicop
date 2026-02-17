@@ -101,6 +101,7 @@ Instead of implementing a decrease-key operation (which is complex and often slo
 | `solution.ts` | TypeScript | Compiled with `tsc`, custom binary heap |
 | `solution.rs` | Rust | Uses `BinaryHeap` with `Reverse` |
 | `solution.cpp` | C++ | Uses `priority_queue` with `greater<>` |
+| `solution.adb` | Ada | Custom binary min-heap, `Ada.Containers.Vectors` |
 
 > **Note:** The Assembly solution uses a simplified O(N^2) Dijkstra without a priority queue, due to the complexity of implementing a heap in assembly.
 
@@ -144,6 +145,12 @@ julia solution.jl < input.txt
 **Factor:**
 ```bash
 ~/factor/factor -script solution.factor < input.txt
+```
+
+**Ada:**
+```bash
+gnatmake -O2 -o solution_ada solution.adb
+./solution_ada < input.txt
 ```
 
 ## Testing

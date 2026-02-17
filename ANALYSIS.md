@@ -1,6 +1,6 @@
 # Comparative Analysis: AI-Generated Competitive Programming Solutions
 
-Analysis of Claude's implementations across 5 classic competitive programming problems in 12 languages: Ruby, Python, Go, Dart, Zig, C, Assembly x86-64, Julia, Factor, TypeScript, Rust, and C++.
+Analysis of Claude's implementations across 5 classic competitive programming problems in 13 languages: Ruby, Python, Go, Dart, Ada, Zig, C, Assembly x86-64, Julia, Factor, TypeScript, Rust, and C++.
 
 ---
 
@@ -82,6 +82,24 @@ Dart implementations use idiomatic class-based design and proper typed collectio
 **Gap: No stdlib sorted search.** Unlike Python (`bisect_left`), Go (`sort.SearchInts`), or Julia (`searchsortedfirst`), Dart requires a manual `lowerBound` implementation for LIS.
 
 **I/O pattern:** Uses `stdin.readLineSync()` in a loop to read all input, then tokenizes. This is the standard competitive programming pattern in Dart, but more verbose than Python's `sys.stdin.buffer.read()` or Go's `bufio.Reader`.
+
+### Ada — Strong typing with verbose but correct implementations (7/10)
+
+Ada implementations leverage the language's strong type system and safety features:
+
+- **Custom types** for domain modeling (`Edge`, `HeapNode`, `Matrix_2x2`) — Ada's type system encourages explicit data modeling
+- **`Long_Long_Integer`** used consistently for 64-bit values (distances, sums, Fibonacci N)
+- **`Ada.Containers.Vectors`** for dynamic adjacency lists — idiomatic use of the standard containers library
+- **`Ada.Text_IO.Integer_IO`** instantiated as generic packages for different integer types — proper Ada generic usage
+- **Declare blocks** for stack allocation after reading N — avoids heap allocation when array size is known
+- **`Width => 0`** on `Put` calls — necessary to avoid Ada's default leading-space formatting for integers
+- **Named parameters** in procedure calls — self-documenting code style
+
+**Gap: No stdlib priority queue.** Like Dart, Ada lacks a built-in priority queue, requiring a full custom binary min-heap implementation in Dijkstra. The heap uses `access` types (Ada pointers) for dynamic resizing.
+
+**Gap: Verbose I/O.** Ada's I/O model requires separate `with`/`use` clauses and explicit package instantiation for each integer type, adding boilerplate compared to most other languages.
+
+**I/O pattern:** Uses `Ada.Text_IO.Get` and `Ada.Integer_Text_IO.Get` for whitespace-delimited token parsing. `Ada.Strings.Unbounded` for KMP string handling since line lengths are unknown at compile time.
 
 ### Zig — Correct but sometimes fighting the language (6.5/10)
 
@@ -1537,9 +1555,9 @@ This generates one `write()` syscall per query result. For Segment Tree with up 
 
 ### Overall Quality: High with Language-Specific Gaps
 
-The implementations are **algorithmically correct** across all 60 files (5 problems × 12 languages) and use the **right asymptotic complexity** for each problem (with the notable exception of Assembly's Dijkstra at O(N²)).
+The implementations are **algorithmically correct** across all 65 files (5 problems × 13 languages) and use the **right asymptotic complexity** for each problem (with the notable exception of Assembly's Dijkstra at O(N²)).
 
-### Language Competency Ranking (Final — 12 Languages)
+### Language Competency Ranking (Final — 13 Languages)
 
 | Rank | Language | Score | Rationale |
 |------|----------|-------|-----------|
@@ -1550,20 +1568,21 @@ The implementations are **algorithmically correct** across all 60 files (5 probl
 | 5 | **C** | **8/10** | Clean, textbook implementations with complete memory management. Every `malloc` has its `free`. Minor deduction for excessive `%MOD` and unchecked `scanf`. |
 | 6 | **Go** | **7.5/10** | Solid, idiomatic Go. Correct `container/heap` usage. Deductions for excessive modular arithmetic, unbuffered I/O inconsistency, and universal error suppression. |
 | 7 | **Dart** | **7.5/10** | Clean class-based OOP with proper typed collections. `typedef`, `final`/`var`, `~/` integer division, `StringBuffer` buffering. Deductions for missing stdlib priority queue and sorted search, requiring custom implementations. |
-| 8 | **Factor** | **7/10** | Most concise language. Good use of `<min-heap>` vocabulary. But overreliance on `::` locals, no combinators, no tuples, no output buffering. Surface-level knowledge of the paradigm. |
-| 9 | **TypeScript** | **6.5/10** | Correct but underutilizes the type system. BigInt for Matrix Exp. is clever. But: no interfaces, no generics, no classes, no `readonly`, manual heap. Reads like JavaScript-with-annotations, not TypeScript. |
-| 10 | **Zig** | **6.5/10** | Demonstrates genuine Zig knowledge but inconsistent: varying allocators, missed stdlib opportunities, mixed error handling. The custom `readInt` shows ambition but overall feels like a translation. |
-| 11 | **Ruby** | **6/10** | Functional and correct but the least idiomatic high-level language. Solutions are Python transliterations. Misses Ruby's unique strengths (mixins, Enumerable, blocks, Struct). |
-| 12 | **Assembly** | **5.5/10** | Impressive scope — implementing segment trees in raw x86-64 is non-trivial. Good register discipline and calling conventions. But: O(N²) Dijkstra downgrade, no dynamic memory, copy-pasted utilities, no SIMD. Competent but not expert-level systems programming. |
+| 8 | **Ada** | **7/10** | Strong type system with explicit data modeling. Custom types for domain objects, declare blocks for stack allocation, proper generic package instantiation. Deductions for verbose I/O boilerplate, missing stdlib priority queue, and `access` type usage for heap. |
+| 9 | **Factor** | **7/10** | Most concise language. Good use of `<min-heap>` vocabulary. But overreliance on `::` locals, no combinators, no tuples, no output buffering. Surface-level knowledge of the paradigm. |
+| 10 | **TypeScript** | **6.5/10** | Correct but underutilizes the type system. BigInt for Matrix Exp. is clever. But: no interfaces, no generics, no classes, no `readonly`, manual heap. Reads like JavaScript-with-annotations, not TypeScript. |
+| 11 | **Zig** | **6.5/10** | Demonstrates genuine Zig knowledge but inconsistent: varying allocators, missed stdlib opportunities, mixed error handling. The custom `readInt` shows ambition but overall feels like a translation. |
+| 12 | **Ruby** | **6/10** | Functional and correct but the least idiomatic high-level language. Solutions are Python transliterations. Misses Ruby's unique strengths (mixins, Enumerable, blocks, Struct). |
+| 13 | **Assembly** | **5.5/10** | Impressive scope — implementing segment trees in raw x86-64 is non-trivial. Good register discipline and calling conventions. But: O(N²) Dijkstra downgrade, no dynamic memory, copy-pasted utilities, no SIMD. Competent but not expert-level systems programming. |
 
 ### Key Takeaways
 
-- **Translation bias persists**: All 12 implementations share identical algorithmic structure, confirming they were generated from a single mental model and translated per-language. Variable names (`dist`, `adj`, `heap`, `tails`, `lps`) are identical across all languages.
+- **Translation bias persists**: All 13 implementations share identical algorithmic structure, confirming they were generated from a single mental model and translated per-language. Variable names (`dist`, `adj`, `heap`, `tails`, `lps`) are identical across all languages.
 
 - **New language tier list**:
   - **Tier 1 (Expert)**: Python, C++
   - **Tier 2 (Strong)**: Rust, Julia, C
-  - **Tier 3 (Competent)**: Go, Dart, Factor
+  - **Tier 3 (Competent)**: Go, Dart, Ada, Factor
   - **Tier 4 (Adequate)**: TypeScript, Zig, Ruby
   - **Tier 5 (Impressive but limited)**: Assembly
 
@@ -1573,16 +1592,16 @@ The implementations are **algorithmically correct** across all 60 files (5 probl
 
 - **TypeScript is the biggest disappointment** — the type system is the language's defining feature, yet these solutions use it at a JavaScript+annotations level. No interfaces, no generics, no classes for data structures.
 
-- **Memory management spectrum**: The 12 languages now span every possible model:
+- **Memory management spectrum**: The 13 languages now span every possible model:
   - **No management**: Python, Ruby, Factor, TypeScript, Dart (pure GC)
   - **GC with tuning**: Go, Julia
   - **Compile-time ownership**: Rust
-  - **RAII/scope-based**: C++
+  - **RAII/scope-based**: C++, Ada
   - **Manual with defer**: Zig
   - **Full manual**: C
   - **Static only**: Assembly
 
-- **Best single file**: `longest-increasing-subsequence/solution.cpp` — 31 lines, `lower_bound` with iterators, `sync_with_stdio(false)`, range-based for. The most elegant expression of the LIS algorithm across all 60 files.
+- **Best single file**: `longest-increasing-subsequence/solution.cpp` — 31 lines, `lower_bound` with iterators, `sync_with_stdio(false)`, range-based for. The most elegant expression of the LIS algorithm across all 65 files.
 
 - **Most impressive file**: `segment-tree-range-queries/solution.cpp` — 87 lines, class with private/public, const-correctness, method overloading, RAII memory management. Textbook OOP.
 
@@ -1592,7 +1611,7 @@ The implementations are **algorithmically correct** across all 60 files (5 probl
 
 ### Cross-Language Antipatterns
 
-1. **Copy-paste comments**: Comments are nearly identical across all 12 languages for the same problem. Language-specific comments would be more helpful.
+1. **Copy-paste comments**: Comments are nearly identical across all 13 languages for the same problem. Language-specific comments would be more helpful.
 
 2. **Identical variable naming**: `dist`, `adj`, `heap`, `tails`, `lps` — same names everywhere, confirming translation rather than independent design.
 

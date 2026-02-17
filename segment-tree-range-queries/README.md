@@ -190,6 +190,7 @@ query(v, tl, tr, l, r):
 | solution.ts   | TypeScript | Compiled with `tsc`, recursive |
 | solution.rs   | Rust     | Struct-based `SegTree` with methods |
 | solution.cpp  | C++      | Class-based `SegTree`, `long long` sums |
+| solution.adb  | Ada      | Recursive, fixed-size tree array |
 
 > **Note:** The Assembly solution uses fixed-size arrays, limiting N to a compile-time maximum, due to the impracticality of dynamic memory management in assembly.
 
@@ -233,6 +234,12 @@ julia solution.jl < input.txt
 **Factor:**
 ```bash
 ~/factor/factor -script solution.factor < input.txt
+```
+
+**Ada:**
+```bash
+gnatmake -O2 -o solution_ada solution.adb
+./solution_ada < input.txt
 ```
 
 ## Testing
