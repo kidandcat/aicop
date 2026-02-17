@@ -824,7 +824,7 @@ cout << tails.<span class="fn">size</span>() << <span class="str">"\n"</span>;</
     <div class="section-header fade-in">
       <div class="section-tag">New Challenge</div>
       <h2 class="section-title">Booking API</h2>
-      <p class="section-desc">A realistic web application &mdash; REST API with authentication, database, and business logic. Same spec, 5 languages, 46 tests each.</p>
+      <p class="section-desc">A realistic web application &mdash; REST API with authentication, database, and business logic. Same spec, 11 languages, 46 tests each.</p>
     </div>
     <div class="fade-in" style="overflow-x:auto">
       <table class="api-table">
@@ -844,6 +844,20 @@ cout << tails.<span class="fn">size</span>() << <span class="str">"\n"</span>;</
             <td><span class="lines-val">197</span></td>
             <td><span class="ratio-val ratio-best">1.00x</span></td>
             <td class="hide-mobile">Express</td>
+          </tr>
+          <tr>
+            <td><div class="lang-name"><div class="lang-icon" style="background:#70151620;color:#701516">RB</div>Ruby</div></td>
+            <td><span class="tests-pass">46/46 &#10003;</span></td>
+            <td><span class="lines-val">307</span></td>
+            <td><span class="ratio-val ratio-good">1.56x</span></td>
+            <td class="hide-mobile">Sinatra</td>
+          </tr>
+          <tr>
+            <td><div class="lang-name"><div class="lang-icon" style="background:#3572A520;color:#3572A5">PY</div>Python</div></td>
+            <td><span class="tests-pass">46/46 &#10003;</span></td>
+            <td><span class="lines-val">348</span></td>
+            <td><span class="ratio-val ratio-good">1.77x</span></td>
+            <td class="hide-mobile">Flask</td>
           </tr>
           <tr>
             <td><div class="lang-name"><div class="lang-icon" style="background:#0175C220;color:#0175C2">DA</div>Dart</div></td>
@@ -867,11 +881,39 @@ cout << tails.<span class="fn">size</span>() << <span class="str">"\n"</span>;</
             <td class="hide-mobile">Axum</td>
           </tr>
           <tr>
+            <td><div class="lang-name"><div class="lang-icon" style="background:#a270ba20;color:#a270ba">JL</div>Julia</div></td>
+            <td><span class="tests-pass">46/46 &#10003;</span></td>
+            <td><span class="lines-val">544</span></td>
+            <td><span class="ratio-val ratio-high">2.76x</span></td>
+            <td class="hide-mobile">HTTP.jl</td>
+          </tr>
+          <tr>
+            <td><div class="lang-name"><div class="lang-icon" style="background:#f34b7d20;color:#f34b7d">C+</div>C++</div></td>
+            <td><span class="tests-pass">46/46 &#10003;</span></td>
+            <td><span class="lines-val">806</span></td>
+            <td><span class="ratio-val ratio-high">4.09x</span></td>
+            <td class="hide-mobile">cpp-httplib</td>
+          </tr>
+          <tr>
             <td><div class="lang-name"><div class="lang-icon" style="background:#02a1c220;color:#02a1c2">AD</div>Ada</div></td>
             <td><span class="tests-pass">46/46 &#10003;</span></td>
             <td><span class="lines-val">1035</span></td>
             <td><span class="ratio-val ratio-high">5.25x</span></td>
             <td class="hide-mobile">AWS</td>
+          </tr>
+          <tr>
+            <td><div class="lang-name"><div class="lang-icon" style="background:#ec915c20;color:#ec915c">ZG</div>Zig</div></td>
+            <td><span class="tests-pass">46/46 &#10003;</span></td>
+            <td><span class="lines-val">1225</span></td>
+            <td><span class="ratio-val ratio-high">6.22x</span></td>
+            <td class="hide-mobile">Raw sockets</td>
+          </tr>
+          <tr>
+            <td><div class="lang-name"><div class="lang-icon" style="background:#55555520;color:#555555">C</div>C</div></td>
+            <td><span class="tests-pass">46/46 &#10003;</span></td>
+            <td><span class="lines-val">1327</span></td>
+            <td><span class="ratio-val ratio-high">6.74x</span></td>
+            <td class="hide-mobile">Raw sockets</td>
           </tr>
         </tbody>
       </table>
@@ -913,6 +955,15 @@ cout << tails.<span class="fn">size</span>() << <span class="str">"\n"</span>;</
           </thead>
           <tbody>
             <tr>
+              <td><div class="lang-name"><div class="lang-icon" style="background:#f34b7d20;color:#f34b7d">C+</div>C++</div></td>
+              <td><span class="rps-val rps-best">39,234</span></td>
+              <td><span class="rps-val rps-best">39,234</span></td>
+              <td><span class="rps-val rps-best">38,514</span></td>
+              <td><span class="rps-val rps-best">43,316</span> <span class="hash-note">sha256</span></td>
+              <td><span class="latency-val">1.3</span></td>
+              <td class="hide-mobile"><span class="mem-val mem-good">9 MB</span></td>
+            </tr>
+            <tr>
               <td><div class="lang-name"><div class="lang-icon" style="background:#dea58420;color:#dea584">RS</div>Rust</div></td>
               <td><span class="rps-val rps-best">27,065</span></td>
               <td><span class="rps-val rps-best">27,565</span></td>
@@ -920,6 +971,15 @@ cout << tails.<span class="fn">size</span>() << <span class="str">"\n"</span>;</
               <td><span class="rps-val rps-low">3.4</span> <span class="hash-note">bcrypt</span></td>
               <td><span class="latency-val">1.8</span></td>
               <td class="hide-mobile"><span class="mem-val mem-best">6 MB</span></td>
+            </tr>
+            <tr>
+              <td><div class="lang-name"><div class="lang-icon" style="background:#55555520;color:#555555">C</div>C</div></td>
+              <td><span class="rps-val rps-good">16,994</span></td>
+              <td><span class="rps-val rps-good">17,274</span></td>
+              <td><span class="rps-val rps-good">17,408</span></td>
+              <td><span class="rps-val rps-best">17,493</span> <span class="hash-note">sha256</span></td>
+              <td><span class="latency-val">2.9</span></td>
+              <td class="hide-mobile"><span class="mem-val mem-best">5 MB</span></td>
             </tr>
             <tr>
               <td><div class="lang-name"><div class="lang-icon" style="background:#00ADD820;color:#00ADD8">GO</div>Go</div></td>
@@ -931,13 +991,49 @@ cout << tails.<span class="fn">size</span>() << <span class="str">"\n"</span>;</
               <td class="hide-mobile"><span class="mem-val mem-mid">30 MB</span></td>
             </tr>
             <tr>
+              <td><div class="lang-name"><div class="lang-icon" style="background:#ec915c20;color:#ec915c">ZG</div>Zig</div></td>
+              <td><span class="rps-val rps-good">15,320</span></td>
+              <td><span class="rps-val rps-good">15,389</span></td>
+              <td><span class="rps-val rps-good">16,482</span></td>
+              <td><span class="rps-val rps-best">16,302</span> <span class="hash-note">sha256</span></td>
+              <td><span class="latency-val">3.1</span></td>
+              <td class="hide-mobile"><span class="mem-val mem-best">2 MB</span></td>
+            </tr>
+            <tr>
               <td><div class="lang-name"><div class="lang-icon" style="background:#02a1c220;color:#02a1c2">AD</div>Ada</div></td>
               <td><span class="rps-val rps-mid">4,559</span></td>
               <td><span class="rps-val rps-mid">5,089</span></td>
               <td><span class="rps-val rps-mid">5,927</span></td>
-              <td><span class="rps-val rps-best">2,312</span> <span class="hash-note">sha256</span></td>
+              <td><span class="rps-val rps-good">2,312</span> <span class="hash-note">sha256</span></td>
               <td><span class="latency-val">8.6</span></td>
               <td class="hide-mobile"><span class="mem-val mem-good">12 MB</span></td>
+            </tr>
+            <tr>
+              <td><div class="lang-name"><div class="lang-icon" style="background:#a270ba20;color:#a270ba">JL</div>Julia</div></td>
+              <td><span class="rps-val rps-mid">3,264</span></td>
+              <td><span class="rps-val rps-mid">4,034</span></td>
+              <td><span class="rps-val rps-mid">3,980</span></td>
+              <td><span class="rps-val rps-good">2,769</span> <span class="hash-note">sha256</span></td>
+              <td><span class="latency-val">14.6</span></td>
+              <td class="hide-mobile"><span class="mem-val mem-high">569 MB</span></td>
+            </tr>
+            <tr>
+              <td><div class="lang-name"><div class="lang-icon" style="background:#70151620;color:#701516">RB</div>Ruby</div></td>
+              <td><span class="rps-val rps-mid">3,659</span></td>
+              <td><span class="rps-val rps-mid">3,583</span></td>
+              <td><span class="rps-val rps-mid">3,608</span></td>
+              <td><span class="rps-val rps-low">18.6</span> <span class="hash-note">bcrypt</span></td>
+              <td><span class="latency-val">13.8</span></td>
+              <td class="hide-mobile"><span class="mem-val mem-mid">43 MB</span></td>
+            </tr>
+            <tr>
+              <td><div class="lang-name"><div class="lang-icon" style="background:#3572A520;color:#3572A5">PY</div>Python</div></td>
+              <td><span class="rps-val rps-low">1,026</span></td>
+              <td><span class="rps-val rps-low">742</span></td>
+              <td><span class="rps-val rps-low">695</span></td>
+              <td><span class="rps-val rps-low">23.8</span> <span class="hash-note">bcrypt</span></td>
+              <td><span class="latency-val">48.6</span></td>
+              <td class="hide-mobile"><span class="mem-val mem-mid">50 MB</span></td>
             </tr>
             <tr>
               <td><div class="lang-name"><div class="lang-icon" style="background:#0175C220;color:#0175C2">DA</div>Dart</div></td>
@@ -960,7 +1056,7 @@ cout << tails.<span class="fn">size</span>() << <span class="str">"\n"</span>;</
           </tbody>
         </table>
       </div>
-      <p class="bench-note">Login throughput varies by hashing algorithm: bcrypt (TypeScript, Go, Rust) is intentionally slow; SHA-256 (Dart, Ada) is fast but less secure.</p>
+      <p class="bench-note">Login throughput varies by hashing algorithm: bcrypt (TypeScript, Go, Rust, Python, Ruby) is intentionally slow; SHA-256 (C, C++, Dart, Ada, Julia, Zig) is fast but less secure.</p>
       <div class="bench-grid">
         <div class="chart-card fade-in">
           <h3>Requests/sec &mdash; GET /spaces</h3>
@@ -1398,8 +1494,8 @@ function copyCode(btn) {
 }
 
 // ---- Benchmark Charts ----
-const benchLabels = ['Rust', 'Go', 'Ada', 'Dart', 'TypeScript'];
-const benchColors = ['#dea584', '#00ADD8', '#02a1c2', '#0175C2', '#3178c6'];
+const benchLabels = ['C++', 'Rust', 'C', 'Go', 'Zig', 'Ada', 'Ruby', 'Julia', 'Python', 'Dart', 'TypeScript'];
+const benchColors = ['#f34b7d', '#dea584', '#555555', '#00ADD8', '#ec915c', '#02a1c2', '#701516', '#a270ba', '#3572A5', '#0175C2', '#3178c6'];
 
 new Chart(document.getElementById('chartBenchRPS'), {
   type:'bar',
@@ -1407,7 +1503,7 @@ new Chart(document.getElementById('chartBenchRPS'), {
     labels: benchLabels,
     datasets:[{
       label:'GET /spaces (req/s)',
-      data:[27065, 15851, 4559, 221, 334],
+      data:[39234, 27065, 16994, 15851, 15320, 4559, 3659, 3264, 1026, 221, 334],
       backgroundColor: benchColors.map(c => c + '40'),
       borderColor: benchColors,
       borderWidth:2,
@@ -1432,7 +1528,7 @@ new Chart(document.getElementById('chartBenchMem'), {
     labels: benchLabels,
     datasets:[{
       label:'Peak Memory (MB)',
-      data:[6, 30, 12, 28, 67],
+      data:[9, 6, 5, 30, 2, 12, 43, 569, 50, 28, 67],
       backgroundColor: benchColors.map(c => c + '40'),
       borderColor: benchColors,
       borderWidth:2,

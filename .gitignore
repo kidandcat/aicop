@@ -18,6 +18,7 @@ target/
 
 # Zig
 zig-cache/
+.zig-cache/
 zig-out/
 
 # Go
@@ -37,6 +38,12 @@ config/
 *.db
 *.db-shm
 *.db-wal
+
+# C / C++ build
+booking-api/c/booking-api
+booking-api/c/cJSON.c
+booking-api/c/cJSON.h
+booking-api/cpp/build/
 
 # Editor files
 .vscode/

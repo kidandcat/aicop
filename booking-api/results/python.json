@@ -1,0 +1,29 @@
+{
+  "language": "python",
+  "concurrency": 50,
+  "duration_seconds": 10,
+  "idle_memory_kb": 44272,
+  "peak_memory_kb": 51488,
+  "benchmarks": {
+    "get_spaces": {
+      "rps": 1025.5,
+      "avg_latency_ms": 48.60,
+      "p99_latency_ms": 123.10
+    },
+    "get_spaces_filtered": {
+      "rps": 742.1,
+      "avg_latency_ms": 47.80,
+      "p99_latency_ms": 293.00
+    },
+    "get_bookings_auth": {
+      "rps": 694.7,
+      "avg_latency_ms": 55.70,
+      "p99_latency_ms": 281.30
+    },
+    "post_login": {
+      "rps": 23.8,
+      "avg_latency_ms": 2041.70,
+      "p99_latency_ms": 2399.20
+    }
+  }
+}
