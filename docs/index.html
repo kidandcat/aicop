@@ -483,6 +483,26 @@ pre code{
 .api-feature h4{font-size:.88rem;font-weight:700;margin-bottom:6px}
 .api-feature p{font-size:.82rem;color:var(--text-secondary);line-height:1.5}
 
+/* ---- Benchmark Results ---- */
+.bench-section{margin-top:48px}
+.bench-section h3{font-size:1.1rem;font-weight:700;margin-bottom:6px}
+.bench-section .bench-subtitle{font-size:.85rem;color:var(--text-secondary);margin-bottom:24px}
+.bench-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}
+@media(max-width:768px){.bench-grid{grid-template-columns:1fr}}
+.bench-note{font-size:.75rem;color:var(--text-muted);margin-top:12px;text-align:center;font-style:italic}
+.api-table .rps-val{font-family:var(--font-mono);font-size:.85rem;font-weight:600;color:var(--accent-emerald)}
+.api-table .latency-val{font-family:var(--font-mono);font-size:.85rem;color:var(--text-secondary)}
+.api-table .mem-val{font-family:var(--font-mono);font-size:.85rem;font-weight:600}
+.mem-best{color:var(--accent-emerald)}
+.mem-good{color:var(--accent-cyan)}
+.mem-mid{color:var(--accent-amber)}
+.mem-high{color:var(--accent-orange)}
+.rps-best{color:var(--accent-emerald)}
+.rps-good{color:var(--accent-cyan)}
+.rps-mid{color:var(--accent-amber)}
+.rps-low{color:var(--accent-orange)}
+.hash-note{font-size:.7rem;color:var(--text-muted);display:block}
+
 /* ---- Conclusions ---- */
 .conclusions-grid{
   display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
@@ -874,6 +894,85 @@ cout << tails.<span class="fn">size</span>() << <span class="str">"\n"</span>;</
         <p>8 endpoints with proper HTTP status codes, error handling, and middleware.</p>
       </div>
     </div>
+    <!-- Stress Test Results -->
+    <div class="bench-section fade-in">
+      <h3>Stress Test Results</h3>
+      <p class="bench-subtitle">50 concurrent connections, 10s per endpoint. Release builds on Apple M-series. Latency in milliseconds.</p>
+      <div class="fade-in" style="overflow-x:auto">
+        <table class="api-table">
+          <thead>
+            <tr>
+              <th>Language</th>
+              <th>GET /spaces<br><span style="font-weight:400;text-transform:none;letter-spacing:0">(req/s)</span></th>
+              <th>GET filtered<br><span style="font-weight:400;text-transform:none;letter-spacing:0">(req/s)</span></th>
+              <th>GET bookings<br><span style="font-weight:400;text-transform:none;letter-spacing:0">(req/s + auth)</span></th>
+              <th>POST login<br><span style="font-weight:400;text-transform:none;letter-spacing:0">(req/s)</span></th>
+              <th>Avg latency<br><span style="font-weight:400;text-transform:none;letter-spacing:0">(ms)</span></th>
+              <th class="hide-mobile">Peak mem</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="lang-name"><div class="lang-icon" style="background:#dea58420;color:#dea584">RS</div>Rust</div></td>
+              <td><span class="rps-val rps-best">27,065</span></td>
+              <td><span class="rps-val rps-best">27,565</span></td>
+              <td><span class="rps-val rps-best">22,644</span></td>
+              <td><span class="rps-val rps-low">3.4</span> <span class="hash-note">bcrypt</span></td>
+              <td><span class="latency-val">1.8</span></td>
+              <td class="hide-mobile"><span class="mem-val mem-best">6 MB</span></td>
+            </tr>
+            <tr>
+              <td><div class="lang-name"><div class="lang-icon" style="background:#00ADD820;color:#00ADD8">GO</div>Go</div></td>
+              <td><span class="rps-val rps-good">15,851</span></td>
+              <td><span class="rps-val rps-good">20,180</span></td>
+              <td><span class="rps-val rps-good">19,693</span></td>
+              <td><span class="rps-val rps-low">61.9</span> <span class="hash-note">bcrypt</span></td>
+              <td><span class="latency-val">2.9</span></td>
+              <td class="hide-mobile"><span class="mem-val mem-mid">30 MB</span></td>
+            </tr>
+            <tr>
+              <td><div class="lang-name"><div class="lang-icon" style="background:#02a1c220;color:#02a1c2">AD</div>Ada</div></td>
+              <td><span class="rps-val rps-mid">4,559</span></td>
+              <td><span class="rps-val rps-mid">5,089</span></td>
+              <td><span class="rps-val rps-mid">5,927</span></td>
+              <td><span class="rps-val rps-best">2,312</span> <span class="hash-note">sha256</span></td>
+              <td><span class="latency-val">8.6</span></td>
+              <td class="hide-mobile"><span class="mem-val mem-good">12 MB</span></td>
+            </tr>
+            <tr>
+              <td><div class="lang-name"><div class="lang-icon" style="background:#0175C220;color:#0175C2">DA</div>Dart</div></td>
+              <td><span class="rps-val rps-low">221</span></td>
+              <td><span class="rps-val rps-low">442</span></td>
+              <td><span class="rps-val rps-low">347</span></td>
+              <td><span class="rps-val rps-mid">368</span> <span class="hash-note">sha256</span></td>
+              <td><span class="latency-val">154.0</span></td>
+              <td class="hide-mobile"><span class="mem-val mem-mid">28 MB</span></td>
+            </tr>
+            <tr>
+              <td><div class="lang-name"><div class="lang-icon" style="background:#3178c620;color:#3178c6">TS</div>TypeScript</div></td>
+              <td><span class="rps-val rps-low">334</span></td>
+              <td><span class="rps-val rps-low">233</span></td>
+              <td><span class="rps-val rps-low">97</span></td>
+              <td><span class="rps-val rps-low">3.4</span> <span class="hash-note">bcrypt</span></td>
+              <td><span class="latency-val">2,439</span></td>
+              <td class="hide-mobile"><span class="mem-val mem-high">67 MB</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="bench-note">Login throughput varies by hashing algorithm: bcrypt (TypeScript, Go, Rust) is intentionally slow; SHA-256 (Dart, Ada) is fast but less secure.</p>
+      <div class="bench-grid">
+        <div class="chart-card fade-in">
+          <h3>Requests/sec &mdash; GET /spaces</h3>
+          <canvas id="chartBenchRPS" height="260"></canvas>
+        </div>
+        <div class="chart-card fade-in">
+          <h3>Peak Memory Usage</h3>
+          <canvas id="chartBenchMem" height="260"></canvas>
+        </div>
+      </div>
+    </div>
+
     <div style="text-align:center;margin-top:32px" class="fade-in">
       <a href="https://github.com/kidandcat/aicop/tree/main/booking-api" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:999px;background:var(--accent-blue);color:#fff;font-weight:700;font-size:.9rem;text-decoration:none;transition:var(--transition)">View implementations &rarr;</a>
     </div>
@@ -1297,6 +1396,60 @@ function copyCode(btn) {
     setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
   });
 }
+
+// ---- Benchmark Charts ----
+const benchLabels = ['Rust', 'Go', 'Ada', 'Dart', 'TypeScript'];
+const benchColors = ['#dea584', '#00ADD8', '#02a1c2', '#0175C2', '#3178c6'];
+
+new Chart(document.getElementById('chartBenchRPS'), {
+  type:'bar',
+  data:{
+    labels: benchLabels,
+    datasets:[{
+      label:'GET /spaces (req/s)',
+      data:[27065, 15851, 4559, 221, 334],
+      backgroundColor: benchColors.map(c => c + '40'),
+      borderColor: benchColors,
+      borderWidth:2,
+      borderRadius:6,
+    }]
+  },
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    indexAxis:'y',
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{grid:chartGrid,ticks:chartTick,title:{display:true,text:'Requests/sec',color:'#64748b',font:{size:11}}},
+      y:{grid:{display:false},ticks:{...chartTick,font:{size:12,weight:'bold'}}}
+    }
+  }
+});
+
+new Chart(document.getElementById('chartBenchMem'), {
+  type:'bar',
+  data:{
+    labels: benchLabels,
+    datasets:[{
+      label:'Peak Memory (MB)',
+      data:[6, 30, 12, 28, 67],
+      backgroundColor: benchColors.map(c => c + '40'),
+      borderColor: benchColors,
+      borderWidth:2,
+      borderRadius:6,
+    }]
+  },
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    indexAxis:'y',
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{grid:chartGrid,ticks:chartTick,title:{display:true,text:'MB',color:'#64748b',font:{size:11}}},
+      y:{grid:{display:false},ticks:{...chartTick,font:{size:12,weight:'bold'}}}
+    }
+  }
+});
 
 // ---- Scroll Animations ----
 const observer = new IntersectionObserver((entries) => {

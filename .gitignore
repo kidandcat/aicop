@@ -22,10 +22,12 @@ zig-out/
 
 # Go
 *.test
+booking-api/go/booking-api
 
 # Dart
 .dart_tool/
 .packages
+booking-api/dart/booking-api
 
 # Ada / Alire
 alire/
