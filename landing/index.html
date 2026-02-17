@@ -790,7 +790,7 @@ cout << tails.<span class="fn">size</span>() << <span class="str">"\n"</span>;</
           <tr>
             <td><div class="lang-name"><div class="lang-icon" style="background:#3178c620;color:#3178c6">TS</div>TypeScript</div></td>
             <td><span class="tests-pass">46/46 &#10003;</span></td>
-            <td><span class="lines-val">200</span></td>
+            <td><span class="lines-val">197</span></td>
             <td><span class="ratio-val ratio-best">1.00x</span></td>
             <td class="hide-mobile">Express</td>
           </tr>
@@ -798,28 +798,28 @@ cout << tails.<span class="fn">size</span>() << <span class="str">"\n"</span>;</
             <td><div class="lang-name"><div class="lang-icon" style="background:#0175C220;color:#0175C2">DA</div>Dart</div></td>
             <td><span class="tests-pass">46/46 &#10003;</span></td>
             <td><span class="lines-val">361</span></td>
-            <td><span class="ratio-val ratio-good">1.81x</span></td>
+            <td><span class="ratio-val ratio-good">1.83x</span></td>
             <td class="hide-mobile">Shelf</td>
           </tr>
           <tr>
             <td><div class="lang-name"><div class="lang-icon" style="background:#00ADD820;color:#00ADD8">GO</div>Go</div></td>
             <td><span class="tests-pass">46/46 &#10003;</span></td>
             <td><span class="lines-val">397</span></td>
-            <td><span class="ratio-val ratio-mid">1.99x</span></td>
+            <td><span class="ratio-val ratio-mid">2.01x</span></td>
             <td class="hide-mobile">Fiber</td>
           </tr>
           <tr>
             <td><div class="lang-name"><div class="lang-icon" style="background:#dea58420;color:#dea584">RS</div>Rust</div></td>
             <td><span class="tests-pass">46/46 &#10003;</span></td>
-            <td><span class="lines-val">549</span></td>
-            <td><span class="ratio-val ratio-high">2.75x</span></td>
+            <td><span class="lines-val">532</span></td>
+            <td><span class="ratio-val ratio-high">2.70x</span></td>
             <td class="hide-mobile">Axum</td>
           </tr>
           <tr>
             <td><div class="lang-name"><div class="lang-icon" style="background:#02a1c220;color:#02a1c2">AD</div>Ada</div></td>
             <td><span class="tests-pass">46/46 &#10003;</span></td>
             <td><span class="lines-val">1035</span></td>
-            <td><span class="ratio-val ratio-high">5.23x</span></td>
+            <td><span class="ratio-val ratio-high">5.25x</span></td>
             <td class="hide-mobile">AWS</td>
           </tr>
         </tbody>
@@ -862,22 +862,29 @@ cout << tails.<span class="fn">size</span>() << <span class="str">"\n"</span>;</
         <div class="conclusion-icon">&#9889;</div>
         <span class="lang-highlight" style="background:rgba(49,120,198,.15);color:#3178c6">Web APIs</span>
         <h3>TypeScript Dominates APIs</h3>
-        <p>From "Adequate" in competitive programming to the clear winner in web APIs. The Express ecosystem and Node.js runtime make REST services remarkably compact &mdash; 2.75x more concise than Rust.</p>
-        <div class="stat">Competitive programming: <strong>6.5/10</strong> &middot; Booking API: <strong>200 lines (1.00x)</strong></div>
+        <p>From "Adequate" in competitive programming to the clear winner in web APIs. The Express ecosystem and Node.js runtime make REST services remarkably compact &mdash; 2.70x more concise than Rust, 5.25x more than Ada.</p>
+        <div class="stat">Competitive programming: <strong>6.5/10</strong> &middot; Booking API: <strong>197 lines (1.00x)</strong></div>
       </div>
       <div class="conclusion-card rs">
         <div class="conclusion-icon">&#9881;&#65039;</div>
         <span class="lang-highlight" style="background:rgba(222,165,132,.15);color:#dea584">Algorithms</span>
         <h3>Rust Excels at Pure Logic</h3>
-        <p>Zero-cost abstractions shine in algorithmic code (1.06x ratio). But the verbosity cost scales with application complexity &mdash; 2.75x for APIs, where explicit error handling and type machinery add up.</p>
-        <div class="stat">Competitive programming: <strong>8.5/10</strong> &middot; Booking API: <strong>549 lines (2.75x)</strong></div>
+        <p>Zero-cost abstractions shine in algorithmic code (1.06x ratio). But the verbosity cost scales with application complexity &mdash; 2.70x for APIs, where explicit error handling and type machinery add up.</p>
+        <div class="stat">Competitive programming: <strong>8.5/10</strong> &middot; Booking API: <strong>532 lines (2.70x)</strong></div>
+      </div>
+      <div class="conclusion-card balance" style="border-color:var(--accent-cyan)">
+        <div class="conclusion-icon">&#128736;</div>
+        <span class="lang-highlight" style="background:rgba(2,161,194,.15);color:#02a1c2">Ecosystem Gap</span>
+        <h3>Ada: Maximum Verbosity in Web</h3>
+        <p>Ada's lack of web ecosystem libraries forces manual JWT implementation, JSON parsing, and Base64 encoding. The 5.25x ratio reflects missing infrastructure, not language capability &mdash; the strongest case for ecosystem maturity over language design.</p>
+        <div class="stat">Competitive programming: <strong>7/10 (2.07x)</strong> &middot; Booking API: <strong>1035 lines (5.25x)</strong></div>
       </div>
       <div class="conclusion-card balance">
         <div class="conclusion-icon">&#9878;&#65039;</div>
         <span class="lang-highlight" style="background:rgba(139,92,246,.15);color:#8b5cf6">Versatile</span>
         <h3>Go &amp; Dart: Steady All-rounders</h3>
         <p>Both deliver consistent performance across domains. Not the most concise anywhere, but never the most verbose either &mdash; a solid balance of readability, robustness, and productivity.</p>
-        <div class="stat">Go: <strong>7.5/10 + 1.99x</strong> &middot; Dart: <strong>7.5/10 + 1.81x</strong></div>
+        <div class="stat">Go: <strong>7.5/10 + 2.01x</strong> &middot; Dart: <strong>7.5/10 + 1.83x</strong></div>
       </div>
     </div>
   </div>

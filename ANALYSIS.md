@@ -19,7 +19,8 @@ Analysis of Claude's implementations across 5 classic competitive programming pr
 11. [C++ Deep Dive](#11-c-deep-dive)
 12. [Assembly x86-64 Deep Dive](#12-assembly-x86-64-deep-dive)
 13. [Factor Deep Dive](#13-factor-deep-dive)
-14. [Summary and Conclusions](#14-summary-and-conclusions)
+14. [Booking API: Web Application Challenge](#14-booking-api-web-application-challenge)
+15. [Summary and Conclusions](#15-summary-and-conclusions)
 
 ---
 
@@ -1551,7 +1552,63 @@ This generates one `write()` syscall per query result. For Segment Tree with up 
 
 ---
 
-## 14. Summary and Conclusions
+## 14. Booking API: Web Application Challenge
+
+### Overview
+
+Beyond competitive programming, we evaluated Claude's ability to build a realistic REST API web application. The Booking API challenge requires JWT authentication, SQLite database operations, business logic validation, and proper HTTP routing — a fundamentally different skill set from algorithmic puzzles.
+
+**Specification**: 8 REST endpoints, 3 database tables, JWT auth middleware, booking overlap detection.
+**Test suite**: 46 automated tests covering registration, login, CRUD, authorization, and edge cases.
+**Languages tested**: TypeScript, Dart, Go, Rust, Ada (5 of the 13 competitive programming languages).
+
+### Lines of Code Comparison
+
+| Rank | Language | Lines | Ratio | Framework | Password Hashing | JWT |
+|------|----------|-------|-------|-----------|-----------------|-----|
+| 1 | **TypeScript** | **197** | **1.00x** | Express 4 | bcryptjs | jsonwebtoken |
+| 2 | **Dart** | **361** | **1.83x** | Shelf | SHA-256 (crypto) | dart_jsonwebtoken |
+| 3 | **Go** | **397** | **2.01x** | Fiber v2 | bcrypt (x/crypto) | golang-jwt v5 |
+| 4 | **Rust** | **532** | **2.70x** | Axum 0.7 | bcrypt | jsonwebtoken 9 |
+| 5 | **Ada** | **1035** | **5.25x** | AWS (Ada Web Server) | SHA-256 (GNAT) | Manual HS256 |
+
+All 5 implementations pass all 46 tests.
+
+### Key Observations
+
+**TypeScript dominance**: TypeScript goes from "Adequate" (6.5/10) in competitive programming to the clear winner in web APIs. Express + better-sqlite3 + jsonwebtoken provides an incredibly compact stack. The entire API fits in 197 lines — including auth middleware, all routes, database setup, and error handling.
+
+**Verbosity scaling**: The competitive programming verbosity ratios (Factor=1.00x baseline) were relatively tight — from 1.00x to 2.07x (excluding Assembly). In web APIs, the spread explodes: from 1.00x to 5.25x. Application complexity amplifies language verbosity differences.
+
+**Ada's ecosystem gap**: Ada's 5.25x ratio is the most extreme case of ecosystem impact. The language itself is capable, but the lack of JWT, JSON, and Base64 libraries means implementing:
+- Full Base64url encoding/decoding from scratch
+- HMAC-SHA256 JWT signing and verification manually
+- JSON string building with manual escaping
+- HTTP request body parsing by hand
+
+This alone accounts for ~300-400 lines that other languages solve with a single library import.
+
+**Architecture consistency**: All 5 implementations follow identical architecture — single file, initialize SQLite from shared schema.sql, define routes, implement JWT auth middleware, handle CRUD for users/spaces/bookings with overlap detection. This confirms the same translation-from-mental-model pattern seen in competitive programming.
+
+**Password hashing variance**: TypeScript, Go, and Rust use bcrypt (industry standard). Dart and Ada use SHA-256 with a static salt — meeting minimum challenge requirements but not production-grade security.
+
+### Cross-Challenge Insights
+
+| Language | CP Score | CP Ratio | API Lines | API Ratio | Shift |
+|----------|----------|----------|-----------|-----------|-------|
+| TypeScript | 6.5/10 | 1.08x | 197 | 1.00x | Massive improvement — ecosystem advantage |
+| Dart | 7.5/10 | 1.54x | 361 | 1.83x | Consistent — moderate verbosity in both domains |
+| Go | 7.5/10 | 1.61x | 397 | 2.01x | Consistent — slightly more verbose in APIs |
+| Rust | 8.5/10 | 1.06x | 532 | 2.70x | Significant decline — type system overhead in APIs |
+| Ada | 7/10 | 2.07x | 1035 | 5.25x | Massive decline — ecosystem poverty |
+
+**The ecosystem effect**: Languages with rich web ecosystems (TypeScript, Go) maintain or improve their ratios. Languages with thin web ecosystems (Ada) see their ratios explode. Rust falls in between — excellent libraries exist, but the type system adds ceremony that scales with application size.
+
+**Competency vs. productivity inversion**: Rust scores highest in competitive programming (8.5/10) but is 2.70x more verbose in web APIs. TypeScript scores lowest (6.5/10) but is the most productive. This demonstrates that algorithmic competency scores don't predict real-world application development efficiency.
+
+---
+
+## 15. Summary and Conclusions
 
 ### Overall Quality: High with Language-Specific Gaps
 
@@ -1600,6 +1657,8 @@ The implementations are **algorithmically correct** across all 65 files (5 probl
   - **Manual with defer**: Zig
   - **Full manual**: C
   - **Static only**: Assembly
+
+- **Web API challenge reveals ecosystem impact**: TypeScript jumps from "Adequate" (6.5/10) in CP to the most concise web API (197 lines, 1.00x). Ada's CP ratio of 2.07x balloons to 5.25x in APIs due to missing ecosystem libraries. The 5 languages tested show verbosity ratios that explode from a 2.07x max spread in CP to a 5.25x spread in web applications.
 
 - **Best single file**: `longest-increasing-subsequence/solution.cpp` — 31 lines, `lower_bound` with iterators, `sync_with_stdio(false)`, range-based for. The most elegant expression of the LIS algorithm across all 65 files.
 
